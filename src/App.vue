@@ -1,15 +1,35 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { RouterView } from 'vue-router'
-import Header from './components/layout/Header.vue'
-import Footer from './components/layout/Footer.vue'
+import Header from '@/components/layout/Header.vue'
+import Footer from '@/components/layout/Footer.vue'
+import Chatbot from '@/components/ui/chatbot/Chatbot.vue'
+import { Button } from '@/components/ui/button'
+import { ArrowUp } from 'lucide-vue-next'
 import { motion } from 'motion-v'
 
 const showChatbot = ref(false)
+const showScrollTop = ref(false)
 
 const toggleChatbot = () => {
   showChatbot.value = !showChatbot.value
 }
+
+const handleScroll = () => {
+  showScrollTop.value = window.scrollY > 200
+}
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
@@ -31,6 +51,23 @@ const toggleChatbot = () => {
 
     <Footer />
     <Chatbot v-if="showChatbot" @close="toggleChatbot" />
+
+    <!-- Scroll to Top Button -->
+    <motion.div
+      class="fixed bottom-8 right-8 z-50"
+      :initial="{ opacity: 0, y: 20 }"
+      :animate="{ opacity: showScrollTop ? 1 : 0, y: showScrollTop ? 0 : 20 }"
+      :transition="{ duration: 0.3 }"
+    >
+      <Button
+        v-if="showScrollTop"
+        @click="scrollToTop"
+        size="icon"
+        class="rounded-full h-12 w-12 shadow-lg"
+      >
+        <ArrowUp class="h-6 w-6" />
+      </Button>
+    </motion.div>
   </div>
 </template>
 

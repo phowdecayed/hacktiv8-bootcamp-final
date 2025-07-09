@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { motion } from 'motion-v'
 import { Button } from '@/components/ui/button'
 import { RouterLink } from 'vue-router'
 
 const route = useRoute()
-const productId = ref(route.params.id)
+const productId = ref(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id)
 
 // Mock data for all services
-const servicesData = {
+const servicesData: { [key: string]: any } = {
   'web-development': {
     title: 'Web Application Development',
     tagline: 'Building the Future of the Web',
@@ -51,6 +51,11 @@ const product = computed(() => servicesData[productId.value] || {
   imageUrl: 'https://picsum.photos/seed/not-found/1200/800',
   features: [],
   gallery: [],
+})
+
+watch(() => route.params.id, (newId) => {
+  productId.value = Array.isArray(newId) ? newId[0] : newId
+  window.scrollTo(0, 0)
 })
 
 </script>

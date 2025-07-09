@@ -7,9 +7,9 @@ import { Badge } from '@/components/ui/badge'
 
 const route = useRoute()
 const router = useRouter()
-const portfolioId = ref(route.params.id)
+const portfolioId = ref(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id)
 
-const portfolioData = {
+const portfolioData: { [key: string]: any } = {
   alpha: { title: 'Project Alpha', category: 'Web App', description: 'A detailed look at our web application for managing complex data streams.', imageUrl: 'https://picsum.photos/seed/p-alpha/1200/800', client: 'TechCorp', date: '2023-05-15', services: 'Web Development, UI/UX Design', website: '#', technologies: ['Vue.js', 'TypeScript', 'Node.js', 'PostgreSQL'], gallery: ['https://picsum.photos/seed/alpha-g1/800/600', 'https://picsum.photos/seed/alpha-g2/800/600', 'https://picsum.photos/seed/alpha-g3/800/600'] },
   beta: { title: 'Project Beta', category: 'Mobile App', description: 'An in-depth overview of our mobile app designed for seamless user interaction.', imageUrl: 'https://picsum.photos/seed/p-beta/1200/800', client: 'Innovate Inc.', date: '2023-08-20', services: 'Mobile Development, UI/UX Design', website: '#', technologies: ['Flutter', 'Dart', 'Firebase'], gallery: ['https://picsum.photos/seed/beta-g1/800/600', 'https://picsum.photos/seed/beta-g2/800/600', 'https://picsum.photos/seed/beta-g3/800/600'] },
   // Add other projects here...
@@ -29,7 +29,7 @@ const prevProject = computed(() => currentIndex.value > 0 ? projectIds[currentIn
 const nextProject = computed(() => currentIndex.value < projectIds.length - 1 ? projectIds[currentIndex.value + 1] : null)
 
 watch(() => route.params.id, (newId) => {
-  portfolioId.value = newId
+  portfolioId.value = Array.isArray(newId) ? newId[0] : newId
   window.scrollTo(0, 0)
 })
 

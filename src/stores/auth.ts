@@ -2,8 +2,14 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+// Define an interface for the user object
+interface User {
+  username: string;
+  password: string; // This will be the hashed password
+}
+
 // Helper function to hash passwords using the SubtleCrypto API
-async function hashPassword(password: string) {
+async function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder()
   const data = encoder.encode(password)
   const hashBuffer = await window.crypto.subtle.digest('SHA-256', data)
@@ -13,17 +19,17 @@ async function hashPassword(password: string) {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref(localStorage.getItem('user'))
+  const user = ref<string | null>(localStorage.getItem('user'))
   const router = useRouter()
 
   const isLoggedIn = computed(() => !!user.value)
 
-  async function register(username, password) {
+  async function register(username: string, password: string): Promise<{ success: boolean; message: string }> {
     if (!username || !password) {
       return { success: false, message: 'Username and password are required.' }
     }
-    const users = JSON.parse(localStorage.getItem('users') || '[]')
-    const existingUser = users.find(u => u.username === username)
+    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]')
+    const existingUser = users.find((u: User) => u.username === username)
 
     if (existingUser) {
       return { success: false, message: 'Username already exists.' }
@@ -35,19 +41,19 @@ export const useAuthStore = defineStore('auth', () => {
     return { success: true, message: 'Registration successful! Please log in.' }
   }
 
-  async function login(username, password) {
-    const users = JSON.parse(localStorage.getItem('users') || '[]')
+  async function login(username: string, password: string): Promise<boolean> {
+    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]')
     const hashedPassword = await hashPassword(password)
 
     // Add default admin user if not present
-    const adminUserExists = users.some(u => u.username === 'admin');
+    const adminUserExists = users.some((u: User) => u.username === 'admin');
     if (!adminUserExists) {
         const adminHashedPassword = await hashPassword('admin');
         users.push({ username: 'admin', password: adminHashedPassword });
         localStorage.setItem('users', JSON.stringify(users));
     }
 
-    const foundUser = users.find(u => u.username === username && u.password === hashedPassword)
+    const foundUser = users.find((u: User) => u.username === username && u.password === hashedPassword)
 
     if (foundUser) {
       user.value = foundUser.username
@@ -58,7 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
     return false
   }
 
-  function logout() {
+  function logout(): void {
     user.value = null
     localStorage.removeItem('user')
     router.push('/')
