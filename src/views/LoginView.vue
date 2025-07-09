@@ -12,8 +12,8 @@ const username = ref('')
 const password = ref('')
 const error = ref(false)
 
-const handleLogin = () => {
-  const success = auth.login(username.value, password.value)
+const handleLogin = async () => {
+  const success = await auth.login(username.value, password.value)
   if (!success) {
     error.value = true
   }

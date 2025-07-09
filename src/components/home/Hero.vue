@@ -31,7 +31,7 @@ function goToChatbot() {
         <h1
           class="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
         >
-          Modern Single-Page Application
+          MINIMALIST
         </h1>
       </motion.div>
 
@@ -41,8 +41,8 @@ function goToChatbot() {
         :transition="{ duration: 0.8, delay: 0.2 }"
       >
         <p class="mt-6 max-w-3xl mx-auto text-lg text-muted-foreground sm:text-xl">
-          Aplikasi web modern yang dibangun dengan Vue 3, TypeScript, dan Tailwind CSS untuk
-          pengalaman pengguna yang optimal, cepat, dan dinamis.
+          A Company Profile Website Built with Vue 3, TypeScript, and Tailwind CSS, Single Page
+          Application.
         </p>
       </motion.div>
 

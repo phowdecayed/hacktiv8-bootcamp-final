@@ -1,84 +1,85 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import { motion } from 'motion-v'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RouterLink } from 'vue-router'
 
 const portfolioItems = [
-  {
-    id: 'alpha',
-    title: 'Project Alpha',
-    description: 'A web application for managing complex data streams.',
-    imageUrl: 'https://picsum.photos/seed/project1/600/400',
-  },
-  {
-    id: 'beta',
-    title: 'Project Beta',
-    description: 'A mobile app designed for seamless user interaction.',
-    imageUrl: 'https://picsum.photos/seed/project2/600/400',
-  },
-  {
-    id: 'gamma',
-    title: 'Project Gamma',
-    description: 'An e-commerce platform with a focus on user experience.',
-    imageUrl: 'https://picsum.photos/seed/project3/600/400',
-  },
-  {
-    id: 'delta',
-    title: 'Project Delta',
-    description: 'A cloud-based solution for data storage and retrieval.',
-    imageUrl: 'https://picsum.photos/seed/project4/600/400',
-  },
-  {
-    id: 'epsilon',
-    title: 'Project Epsilon',
-    description: 'A design system for a major corporate client.',
-    imageUrl: 'https://picsum.photos/seed/project5/600/400',
-  },
-  {
-    id: 'zeta',
-    title: 'Project Zeta',
-    description: 'A marketing website for a new product launch.',
-    imageUrl: 'https://picsum.photos/seed/project6/600/400',
-  },
+  { id: 'alpha', title: 'Project Alpha', category: 'Web App', description: 'A web application for managing complex data streams.', imageUrl: 'https://picsum.photos/seed/project1/600/400' },
+  { id: 'beta', title: 'Project Beta', category: 'Mobile App', description: 'A mobile app designed for seamless user interaction.', imageUrl: 'https://picsum.photos/seed/project2/600/400' },
+  { id: 'gamma', title: 'Project Gamma', category: 'E-commerce', description: 'An e-commerce platform with a focus on user experience.', imageUrl: 'https://picsum.photos/seed/project3/600/400' },
+  { id: 'delta', title: 'Project Delta', category: 'Cloud', description: 'A cloud-based solution for data storage and retrieval.', imageUrl: 'https://picsum.photos/seed/project4/600/400' },
+  { id: 'epsilon', title: 'Project Epsilon', category: 'Web App', description: 'A design system for a major corporate client.', imageUrl: 'https://picsum.photos/seed/project5/600/400' },
+  { id: 'zeta', title: 'Project Zeta', category: 'E-commerce', description: 'A marketing website for a new product launch.', imageUrl: 'https://picsum.photos/seed/project6/600/400' },
 ]
+
+const categories = ['All', 'Web App', 'Mobile App', 'E-commerce', 'Cloud']
+const activeCategory = ref('All')
+
+const filteredItems = computed(() => {
+  if (activeCategory.value === 'All') {
+    return portfolioItems
+  }
+  return portfolioItems.filter(item => item.category === activeCategory.value)
+})
 </script>
 
 <template>
-  <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <div class="bg-background text-foreground">
+    <!-- Hero Section -->
     <motion.div
-      :initial="{ opacity: 0, y: 20 }"
+      class="py-20 text-center bg-primary/5"
+      :initial="{ opacity: 0, y: -20 }"
       :animate="{ opacity: 1, y: 0 }"
-      :transition="{ duration: 0.6 }"
-      class="text-center"
+      :transition="{ duration: 0.8 }"
     >
-      <h1 class="text-3xl font-extrabold text-foreground sm:text-4xl">Our Portfolio</h1>
-      <p class="mt-4 text-lg text-muted-foreground">
-        Check out some of our recent work.
+      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+        Our Portfolio
+      </h1>
+      <p class="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
+        A showcase of our passion, creativity, and hard work.
       </p>
     </motion.div>
 
-    <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      <motion.div
-        v-for="(item, index) in portfolioItems"
-        :key="item.title"
-        :initial="{ opacity: 0, y: 20 }"
-        :animate="{ opacity: 1, y: 0 }"
-        :transition="{ duration: 0.5, delay: 0.1 * index }"
-      >
-        <Card class="overflow-hidden h-full flex flex-col">
-          <img :src="item.imageUrl" :alt="item.title" class="w-full h-48 object-cover">
-          <CardContent class="pt-6 flex-grow">
-            <h3 class="text-lg font-semibold">{{ item.title }}</h3>
-            <p class="text-muted-foreground mt-2">{{ item.description }}</p>
-          </CardContent>
-          <CardFooter>
-            <Button variant="secondary" class="w-full" asChild>
+    <!-- Filter Section -->
+    <div class="py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-center gap-2 sm:gap-4">
+        <Button
+          v-for="category in categories"
+          :key="category"
+          :variant="activeCategory === category ? 'default' : 'outline'"
+          @click="activeCategory = category"
+        >
+          {{ category }}
+        </Button>
+      </div>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div
+          v-for="item in filteredItems"
+          :key="item.id"
+          class="group relative overflow-hidden rounded-lg shadow-lg"
+          :initial="{ opacity: 0, y: 50 }"
+          :animate="{ opacity: 1, y: 0 }"
+          :transition="{ duration: 0.5 }"
+        >
+          <img :src="item.imageUrl" :alt="item.title" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+          <div class="absolute bottom-0 left-0 p-6 text-white">
+            <span class="text-sm bg-primary/80 px-2 py-1 rounded-full">{{ item.category }}</span>
+            <h3 class="text-xl font-bold mt-2">{{ item.title }}</h3>
+            <p class="opacity-0 group-hover:opacity-100 transition-opacity duration-300 max-h-0 group-hover:max-h-full">
+              {{ item.description }}
+            </p>
+            <Button variant="secondary" class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300" asChild>
               <RouterLink :to="{ name: 'portfolio-detail', params: { id: item.id } }">View Project</RouterLink>
             </Button>
-          </CardFooter>
-        </Card>
-      </motion.div>
+          </div>
+        </motion.div>
+      </div>
     </div>
   </div>
 </template>

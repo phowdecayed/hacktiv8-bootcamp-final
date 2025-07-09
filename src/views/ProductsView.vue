@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { RouterLink } from 'vue-router'
 
@@ -9,70 +8,84 @@ const services = [
     id: 'web-development',
     title: 'Web Application Development',
     description: 'We build modern, scalable, and secure web applications tailored to your business needs using the latest technologies.',
-    icon: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
+    imageUrl: 'https://picsum.photos/seed/web-dev/800/600',
   },
   {
     id: 'mobile-development',
     title: 'Mobile App Development',
     description: 'Cross-platform mobile apps for iOS and Android that deliver a seamless user experience and robust performance.',
-    icon: 'M15.5 1h-8A2.5 2.5 0 0 0 5 3.5v17A2.5 2.5 0 0 0 7.5 23h8a2.5 2.5 0 0 0 2.5-2.5v-17A2.5 2.5 0 0 0 15.5 1z',
+    imageUrl: 'https://picsum.photos/seed/mobile-dev/800/600',
   },
   {
     id: 'ui-ux-design',
     title: 'UI/UX Design',
     description: 'Intuitive and beautiful user interfaces that enhance user engagement and drive conversions.',
-    icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z',
+    imageUrl: 'https://picsum.photos/seed/ui-ux/800/600',
   },
   {
     id: 'cloud-solutions',
     title: 'Cloud Solutions',
     description: 'Scalable and secure cloud infrastructure to power your applications and services.',
-    icon: 'M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z',
+    imageUrl: 'https://picsum.photos/seed/cloud/800/600',
   },
 ]
 </script>
 
 <template>
-  <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  <div class="bg-background text-foreground">
+    <!-- Hero Section -->
     <motion.div
-      :initial="{ opacity: 0, y: 20 }"
+      class="py-20 text-center bg-primary/5"
+      :initial="{ opacity: 0, y: -20 }"
       :animate="{ opacity: 1, y: 0 }"
-      :transition="{ duration: 0.6 }"
-      class="text-center"
+      :transition="{ duration: 0.8 }"
     >
-      <h1 class="text-3xl font-extrabold text-foreground sm:text-4xl">Our Services</h1>
-      <p class="mt-4 text-lg text-muted-foreground">
-        We offer a wide range of services to help you build your next great idea.
+      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+        Our Services
+      </h1>
+      <p class="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
+        Innovative solutions to bring your ideas to life.
       </p>
     </motion.div>
 
-    <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-2">
-      <motion.div
-        v-for="(service, index) in services"
-        :key="service.title"
-        :initial="{ opacity: 0, y: 20 }"
-        :animate="{ opacity: 1, y: 0 }"
-        :transition="{ duration: 0.5, delay: 0.1 * index }"
-      >
-        <Card class="h-full flex flex-col">
-          <CardHeader>
-            <div class="flex items-center gap-4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-primary">
-                <path :d="service.icon" />
-              </svg>
-              <CardTitle>{{ service.title }}</CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent class="flex-grow">
-            <CardDescription>{{ service.description }}</CardDescription>
-          </CardContent>
-          <div class="p-6 pt-0">
-            <Button variant="outline" asChild>
-              <RouterLink :to="{ name: 'product-detail', params: { id: service.id } }">Learn More</RouterLink>
+    <!-- Services Section -->
+    <div class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-24">
+        <motion.div
+          v-for="(service, index) in services"
+          :key="service.id"
+          class="grid md:grid-cols-2 gap-12 items-center"
+          :initial="{ opacity: 0, y: 50 }"
+          :while-in-view="{ opacity: 1, y: 0 }"
+          :transition="{ duration: 0.6, delay: 0.1 * index }"
+        >
+          <div :class="index % 2 === 0 ? 'md:order-last' : ''">
+            <img :src="service.imageUrl" :alt="service.title" class="rounded-lg shadow-xl w-full h-auto">
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold mb-4">{{ service.title }}</h2>
+            <p class="text-muted-foreground text-lg mb-6">{{ service.description }}</p>
+            <Button asChild>
+              <RouterLink :to="{ name: 'product-detail', params: { id: service.id } }">
+                Learn More
+              </RouterLink>
             </Button>
           </div>
-        </Card>
-      </motion.div>
+        </motion.div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="bg-muted/20 py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold">Ready to start a project?</h2>
+        <p class="mt-4 text-lg text-muted-foreground">
+          Let's work together to build something amazing.
+        </p>
+        <Button size="lg" class="mt-8" asChild>
+          <RouterLink to="/contact">Get in Touch</RouterLink>
+        </Button>
+      </div>
     </div>
   </div>
 </template>

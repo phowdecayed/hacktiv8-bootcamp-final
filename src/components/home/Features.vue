@@ -1,86 +1,70 @@
 <script setup lang="ts">
-import FeatureCard from '@/components/home/FeatureCard.vue'
-import { Card } from '@/components/ui/card'
+import { ref } from 'vue'
 import { motion } from 'motion-v'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Zap, Code, Shield, Smartphone, Cloud, Layers } from 'lucide-vue-next'
 
 defineOptions({
   name: 'HomeFeatures',
 })
 
 const features = [
-  {
-    title: 'Modern Vue 3',
-    description:
-      'Memanfaatkan fitur terbaru dari Vue 3 seperti Composition API untuk kode yang lebih modular dan terorganisir.',
-    icon: 'M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z',
-  },
-  {
-    title: 'TypeScript',
-    description:
-      'Pengembangan yang lebih handal dengan static typing dan tooling yang lebih baik untuk menghindari kesalahan runtime.',
-    icon: 'M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4',
-  },
-  {
-    title: 'Tailwind CSS',
-    description:
-      'Framework CSS yang utility-first untuk desain yang cepat dan responsif dengan minimal CSS kustom.',
-    icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01',
-  },
-  {
-    title: 'SPA Routing',
-    description:
-      'Navigasi cepat antar halaman tanpa memerlukan refresh browser menggunakan Vue Router.',
-    icon: 'M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4',
-  },
-  {
-    title: 'State Management',
-    description: 'Pengelolaan state aplikasi yang efisien dan terstruktur dengan Pinia.',
-    icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4',
-  },
-  {
-    title: 'Responsive Design',
-    description: 'Tampilan yang optimal di berbagai ukuran layar dari mobile hingga desktop.',
-    icon: 'M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z',
-  },
+  { title: 'Modern Vue 3', description: 'Utilizing the latest features of Vue 3, including the Composition API for more modular and organized code.', icon: Code },
+  { title: 'TypeScript', description: 'More reliable development with static typing and better tooling to prevent runtime errors.', icon: Shield },
+  { title: 'Tailwind CSS', description: 'A utility-first CSS framework for rapid and responsive design with minimal custom CSS.', icon: Layers },
+  { title: 'SPA Routing', description: 'Fast page navigation without browser refreshes using Vue Router.', icon: Zap },
+  { title: 'State Management', description: 'Efficient and structured application state management with Pinia.', icon: Cloud },
+  { title: 'Responsive Design', description: 'Optimal display across various screen sizes, from mobile to desktop.', icon: Smartphone },
 ]
+
+const activeFeatureIndex = ref(0)
 </script>
 
 <template>
   <section id="features" class="py-24 bg-background">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <motion.div
-        :initial="{ opacity: 0, y: 30 }"
-        :animate="{ opacity: 1, y: 0 }"
-        :transition="{ duration: 0.6 }"
-        class="text-center"
-      >
-        <h2 class="text-base font-semibold tracking-wide text-primary uppercase">Fitur-Fitur</h2>
-        <p class="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
-          Semua yang Anda butuhkan untuk aplikasi modern
-        </p>
-        <p class="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
-          Dirancang dengan teknologi terkini untuk pengalaman pengembangan dan pengguna yang optimal
-        </p>
-      </motion.div>
+      <div class="grid md:grid-cols-2 gap-12 items-start">
+        <div class="sticky top-24">
+          <motion.div
+            :initial="{ opacity: 0, x: -50 }"
+            :while-in-view="{ opacity: 1, x: 0 }"
+            :transition="{ duration: 0.7 }"
+          >
+            <h2 class="text-base font-semibold tracking-wide text-primary uppercase">Features</h2>
+            <p class="mt-2 text-3xl font-extrabold text-foreground sm:text-4xl">
+              Everything You Need for a Modern Application
+            </p>
+            <p class="mt-4 max-w-2xl text-xl text-muted-foreground">
+              Designed with the latest technology for an optimal developer and user experience.
+            </p>
+          </motion.div>
+        </div>
 
-      <div class="mt-20">
-        <Card class="border-none bg-transparent shadow-none">
-          <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <motion.div
-              v-for="(feature, index) in features"
-              :key="feature.title"
-              :initial="{ opacity: 0, y: 20 }"
-              :animate="{ opacity: 1, y: 0 }"
-              :transition="{ duration: 0.5, delay: 0.1 * index }"
-            >
-              <FeatureCard
-                :title="feature.title"
-                :description="feature.description"
-                :icon="feature.icon"
-              />
-            </motion.div>
-          </div>
-        </Card>
+        <div class="space-y-8">
+          <motion.div
+            v-for="(feature, index) in features"
+            :key="feature.title"
+            @mouseover="activeFeatureIndex = index"
+            class="cursor-pointer"
+            :initial="{ opacity: 0, y: 30 }"
+            :while-in-view="{ opacity: 1, y: 0 }"
+            :transition="{ duration: 0.5, delay: 0.1 * index }"
+          >
+            <Card :class="['transition-all duration-300', activeFeatureIndex === index ? 'bg-primary/5 shadow-lg' : 'bg-muted/20']">
+              <CardHeader>
+                <div class="flex items-center gap-4">
+                  <component :is="feature.icon" :class="['w-8 h-8 transition-colors', activeFeatureIndex === index ? 'text-primary' : 'text-muted-foreground']" />
+                  <CardTitle>{{ feature.title }}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p :class="['transition-colors', activeFeatureIndex === index ? 'text-foreground' : 'text-muted-foreground']">
+                  {{ feature.description }}
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
       </div>
     </div>
   </section>

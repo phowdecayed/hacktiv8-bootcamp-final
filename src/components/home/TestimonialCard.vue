@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Quote } from 'lucide-vue-next'
 
 defineProps<{
   quote: string
@@ -19,21 +20,22 @@ const getInitials = (name: string) => {
 </script>
 
 <template>
-  <Card>
-    <CardContent class="p-6">
-      <div class="flex items-center mb-4">
-        <Avatar class="h-10 w-10">
+  <Card class="h-full bg-background/60 backdrop-blur-sm border-border/50 hover:bg-primary/5 transition-colors duration-300">
+    <CardContent class="p-6 flex flex-col h-full">
+      <Quote class="w-8 h-8 text-primary mb-4" />
+      <blockquote class="flex-grow">
+        <p class="text-lg text-foreground leading-relaxed">"{{ quote }}"</p>
+      </blockquote>
+      <div class="mt-6 flex items-center">
+        <Avatar class="h-12 w-12">
           <AvatarImage :src="avatar" :alt="author" />
           <AvatarFallback>{{ getInitials(author) }}</AvatarFallback>
         </Avatar>
         <div class="ml-4">
-          <h4 class="text-base font-medium">{{ author }}</h4>
+          <h4 class="text-base font-bold text-foreground">{{ author }}</h4>
           <p class="text-sm text-muted-foreground">{{ title }}</p>
         </div>
       </div>
-      <blockquote>
-        <p class="text-muted-foreground italic">"{{ quote }}"</p>
-      </blockquote>
     </CardContent>
   </Card>
 </template>

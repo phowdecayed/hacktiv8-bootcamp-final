@@ -6,6 +6,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 import svgLoader from 'vite-svg-loader'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,6 +17,45 @@ export default defineConfig({
     tailwindcss(),
     svgLoader({
       defaultImport: 'url', // or 'raw'
+    }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/picsum\.photos\/.*/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'placeholder-images-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 Days
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+      },
+      manifest: {
+        name: 'Modern SPA',
+        short_name: 'ModernSPA',
+        description: 'A modern single-page application.',
+        theme_color: '#ffffff',
+        icons: [
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
     }),
   ],
   resolve: {
