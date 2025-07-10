@@ -75,14 +75,21 @@ async function particlesInit(engine: Engine) {
         </Button>
         <Button
           size="lg"
-          variant="outline"
+          variant="secondary"
           class="shadow-lg bg-background/50 w-full sm:w-auto"
           @click="goToChatbot"
           :while-hover="{ scale: 1.05 }"
           :while-tap="{ scale: 0.95 }"
         >
-          <Sparkles class="mr-2 h-5 w-5 text-yellow-400" />
-          Chat dengan AI
+          <motion.a
+            href="#chatbot"
+            :while-hover="{ scale: 1.05 }"
+            :while-tap="{ scale: 0.95 }"
+            class="flex items-center"
+          >
+            <Sparkles class="mr-2 h-5 w-5 text-yellow-400" />
+            <span>Chat dengan AI</span>
+          </motion.a>
         </Button>
       </motion.div>
     </motion.div>
