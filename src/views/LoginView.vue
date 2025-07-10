@@ -6,49 +6,69 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { motion } from 'motion-v'
+import { RouterLink } from 'vue-router'
+import { toast } from 'vue-sonner'
 
 const auth = useAuthStore()
 const username = ref('')
 const password = ref('')
-const error = ref(false)
 
 const handleLogin = async () => {
   const success = await auth.login(username.value, password.value)
   if (!success) {
-    error.value = true
+    toast.error('Login Failed', {
+      description: 'Invalid username or password.',
+    })
   }
 }
 </script>
 
 <template>
-  <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-md mx-auto">
-    <motion.div
-      :initial="{ opacity: 0, y: 20 }"
-      :animate="{ opacity: 1, y: 0 }"
-      :transition="{ duration: 0.6 }"
-    >
-      <Card>
-        <CardHeader class="text-center">
-          <CardTitle class="text-2xl">Login</CardTitle>
-          <CardDescription>Enter your credentials to access your account.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form @submit.prevent="handleLogin" class="space-y-4">
-            <div class="space-y-2">
-              <Label for="username">Username</Label>
-              <Input id="username" v-model="username" required placeholder="admin" />
-            </div>
-            <div class="space-y-2">
-              <Label for="password">Password</Label>
-              <Input id="password" v-model="password" type="password" required placeholder="admin" />
-            </div>
-            <p v-if="error" class="text-sm text-destructive">Invalid username or password.</p>
-          </form>
-        </CardContent>
-        <CardFooter>
-          <Button @click="handleLogin" class="w-full">Login</Button>
-        </CardFooter>
-      </Card>
-    </motion.div>
+  <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-muted/20">
+    <div class="w-full max-w-4xl mx-auto p-4">
+      <div class="grid md:grid-cols-2 rounded-lg overflow-hidden shadow-2xl bg-background">
+        <!-- Form Section -->
+        <motion.div
+          class="p-8 md:p-12"
+          :initial="{ opacity: 0, x: -50 }"
+          :animate="{ opacity: 1, x: 0 }"
+          :transition="{ duration: 0.7 }"
+        >
+          <Card class="border-none shadow-none">
+            <CardHeader class="text-left">
+              <CardTitle class="text-3xl font-bold">Welcome Back</CardTitle>
+              <CardDescription>Enter your credentials to access your account.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form @submit.prevent="handleLogin" class="space-y-4">
+                <div class="space-y-2">
+                  <Label for="username">Username</Label>
+                  <Input id="username" v-model="username" required placeholder="admin" />
+                </div>
+                <div class="space-y-2">
+                  <Label for="password">Password</Label>
+                  <Input id="password" v-model="password" type="password" required placeholder="admin" />
+                </div>
+                <Button @click="handleLogin" class="w-full !mt-6">Login</Button>
+              </form>
+            </CardContent>
+            <CardFooter class="text-center text-sm">
+              <p>Don't have an account? <RouterLink to="/register" class="text-primary hover:underline">Register</RouterLink></p>
+            </CardFooter>
+          </Card>
+        </motion.div>
+        
+        <!-- Image Section -->
+        <motion.div
+          class="hidden md:block relative"
+          :initial="{ opacity: 0, x: 50 }"
+          :animate="{ opacity: 1, x: 0 }"
+          :transition="{ duration: 0.7, delay: 0.2 }"
+        >
+          <img src="https://picsum.photos/seed/login/800/1000" alt="Login illustration" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </motion.div>
+      </div>
+    </div>
   </div>
 </template>

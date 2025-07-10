@@ -2,6 +2,15 @@
 import { RouterLink } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/stores/auth'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 defineOptions({
   name: 'SiteNavigation',
@@ -34,7 +43,27 @@ const routes = [
       </Button>
     </template>
     <template v-else>
-      <Button @click="auth.logout()" variant="outline">Logout</Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger as-child>
+          <Button variant="ghost" class="relative h-8 w-8 rounded-full">
+            <Avatar class="h-8 w-8">
+              <AvatarImage src="https://i.pravatar.cc/150" alt="User Avatar" />
+              <AvatarFallback>{{ auth.user?.charAt(0).toUpperCase() }}</AvatarFallback>
+            </Avatar>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent class="w-56" align="end">
+          <DropdownMenuLabel class="font-normal">
+            <div class="flex flex-col space-y-1">
+              <p class="text-sm font-medium leading-none">Welcome, {{ auth.user }}</p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem @click="auth.logout()">
+            Log out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </template>
   </nav>
 </template>

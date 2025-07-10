@@ -7,6 +7,7 @@ import Chatbot from '@/components/ui/chatbot/Chatbot.vue'
 import { Button } from '@/components/ui/button'
 import { ArrowUp } from 'lucide-vue-next'
 import { motion } from 'motion-v'
+import { Toaster } from '@/components/ui/sonner'
 
 const showChatbot = ref(false)
 const showScrollTop = ref(false)
@@ -35,7 +36,7 @@ onUnmounted(() => {
 <template>
   <div class="min-h-screen flex flex-col">
     <Header />
-
+    <Toaster rich-colors position="top-right" :style="{ zIndex: 9999 }" />
     <main class="flex-grow">
       <router-view v-slot="{ Component }">
         <motion.div

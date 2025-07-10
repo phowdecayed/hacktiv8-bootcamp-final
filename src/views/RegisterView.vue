@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { motion } from 'motion-v'
+import { toast } from 'vue-sonner'
+import { RouterLink } from 'vue-router'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -14,58 +16,81 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 const email = ref('')
-const error = ref<string | null>(null)
-const success = ref<string | null>(null)
+const isLoading = ref(false)
 
 const handleRegister = async () => {
-  error.value = null
-  success.value = null
+  isLoading.value = true
   const result = await auth.register(username.value, password.value)
+  isLoading.value = false
+
   if (result.success) {
-    success.value = result.message
+    toast.success('Registration Successful!', {
+      description: 'You will be redirected to the login page shortly.',
+    })
     setTimeout(() => {
       router.push('/login')
-    }, 1500)
+    }, 2000)
   } else {
-    error.value = result.message
+    toast.error('Registration Failed', {
+      description: result.message,
+    })
   }
 }
 </script>
 
 <template>
-  <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-md mx-auto">
-    <motion.div
-      :initial="{ opacity: 0, y: 20 }"
-      :animate="{ opacity: 1, y: 0 }"
-      :transition="{ duration: 0.6 }"
-    >
-      <Card>
-        <CardHeader class="text-center">
-          <CardTitle class="text-2xl">Register</CardTitle>
-          <CardDescription>Create a new account.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form @submit.prevent="handleRegister" class="space-y-4">
-            <div class="space-y-2">
-              <Label for="email">Email</Label>
-              <Input id="email" v-model="email" type="email" required placeholder="email@example.com" />
-            </div>
-            <div class="space-y-2">
-              <Label for="username">Username</Label>
-              <Input id="username" v-model="username" required placeholder="Choose a username" />
-            </div>
-            <div class="space-y-2">
-              <Label for="password">Password</Label>
-              <Input id="password" v-model="password" type="password" required placeholder="Create a password" />
-            </div>
-            <p v-if="error" class="text-sm text-destructive">{{ error }}</p>
-            <p v-if="success" class="text-sm text-green-600">{{ success }}</p>
-          </form>
-        </CardContent>
-        <CardFooter>
-          <Button @click="handleRegister" class="w-full">Register</Button>
-        </CardFooter>
-      </Card>
-    </motion.div>
+  <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-muted/20">
+    <div class="w-full max-w-4xl mx-auto p-4">
+      <div class="grid md:grid-cols-2 rounded-lg overflow-hidden shadow-2xl bg-background">
+        <!-- Form Section -->
+        <motion.div
+          class="p-8 md:p-12"
+          :initial="{ opacity: 0, x: -50 }"
+          :animate="{ opacity: 1, x: 0 }"
+          :transition="{ duration: 0.7 }"
+        >
+          <Card class="border-none shadow-none">
+            <CardHeader class="text-left">
+              <CardTitle class="text-3xl font-bold">Create an Account</CardTitle>
+              <CardDescription>Join us and start your journey today.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form @submit.prevent="handleRegister" class="space-y-4">
+                <div class="space-y-2">
+                  <Label for="email">Email</Label>
+                  <Input id="email" v-model="email" type="email" required placeholder="email@example.com" />
+                </div>
+                <div class="space-y-2">
+                  <Label for="username">Username</Label>
+                  <Input id="username" v-model="username" required placeholder="Choose a username" />
+                </div>
+                <div class="space-y-2">
+                  <Label for="password">Password</Label>
+                  <Input id="password" v-model="password" type="password" required placeholder="Create a password" />
+                </div>
+                <Button @click="handleRegister" class="w-full !mt-6" :disabled="isLoading">
+                  <span v-if="isLoading">Registering...</span>
+                  <span v-else>Register</span>
+                </Button>
+              </form>
+            </CardContent>
+            <CardFooter class="text-center text-sm">
+              <p>Already have an account? <RouterLink to="/login" class="text-primary hover:underline">Login</RouterLink></p>
+            </CardFooter>
+          </Card>
+        </motion.div>
+
+        <!-- Image Section -->
+        <motion.div
+          class="hidden md:block relative"
+          :initial="{ opacity: 0, x: 50 }"
+          :animate="{ opacity: 1, x: 0 }"
+          :transition="{ duration: 0.7, delay: 0.2 }"
+        >
+          <img src="https://picsum.photos/seed/register/800/1000" alt="Registration illustration" class="absolute inset-0 w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </motion.div>
+      </div>
+    </div>
   </div>
 </template>
