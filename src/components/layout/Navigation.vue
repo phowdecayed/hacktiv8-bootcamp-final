@@ -32,6 +32,7 @@ import {
   Mail,
   LogIn,
   UserPlus,
+  BookOpen,
 } from 'lucide-vue-next'
 import { motion } from 'motion-v'
 
@@ -47,6 +48,7 @@ const routes = [
   { name: 'Tentang', path: '/about', icon: Info },
   { name: 'Produk', path: '/products', icon: Package },
   { name: 'Portofolio', path: '/portfolio', icon: Briefcase },
+  { name: 'Blog', path: '/blog', icon: BookOpen },
   { name: 'Kontak', path: '/contact', icon: Mail },
 ]
 </script>
