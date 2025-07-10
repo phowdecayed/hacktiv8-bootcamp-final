@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import TestimonialCard from '@/components/home/TestimonialCard.vue'
 import { motion } from 'motion-v'
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@/components/ui/carousel'
+import Autoplay from 'embla-carousel-autoplay'
 
 defineOptions({
   name: 'HomeTestimonials',
@@ -8,8 +16,7 @@ defineOptions({
 
 const testimonials = [
   {
-    quote:
-      "This application has been a complete game-changer for our team. Before, we were juggling multiple platforms, leading to communication breakdowns and missed deadlines. Now, with this single, unified solution, our workflow has been streamlined beyond what we thought possible. The clean interface is incredibly intuitive, and the powerful, behind-the-scenes features have automated so many of our tedious tasks. Our productivity has easily increased by 40%, and team morale is at an all-time high. It's not just a tool; it's the new backbone of our operations.",
+    quote: 'This application has been a complete game-changer for our team.',
     author: 'Budi Santoso',
     title: 'CTO, Tech Solutions',
     avatar: 'https://i.pravatar.cc/150?img=1',
@@ -27,6 +34,20 @@ const testimonials = [
     author: 'Ahmad Fauzi',
     title: 'UI/UX Designer, Design Hub',
     avatar: 'https://i.pravatar.cc/150?img=8',
+  },
+  {
+    quote:
+      "The collaboration features are top-notch, allowing our remote team to work together seamlessly. It's like we're all in the same room.",
+    author: 'Siti Aminah',
+    title: 'Lead Developer, Innovate Inc.',
+    avatar: 'https://i.pravatar.cc/150?img=3',
+  },
+  {
+    quote:
+      'Customer support is incredibly responsive and helpful. Any issue we had was resolved within hours, not days.',
+    author: 'Rizky Pratama',
+    title: 'Project Manager, BuildRight',
+    avatar: 'https://i.pravatar.cc/150?img=11',
   },
 ]
 </script>
@@ -49,40 +70,46 @@ const testimonials = [
         </p>
       </motion.div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Featured Testimonial -->
-        <motion.div
-          class="lg:col-span-2"
-          :initial="{ opacity: 0, y: 50 }"
-          :while-in-view="{ opacity: 1, y: 0 }"
-          :transition="{ duration: 0.7, delay: 0.2 }"
+      <motion.div
+        :initial="{ opacity: 0, y: 50 }"
+        :while-in-view="{ opacity: 1, y: 0 }"
+        :transition="{ duration: 0.7, delay: 0.2 }"
+      >
+        <Carousel
+          class="relative w-full max-w-5xl mx-auto"
+          :opts="{
+            align: 'start',
+            loop: true,
+          }"
+          :plugins="[
+            Autoplay({
+              delay: 2000,
+              stopOnInteraction: true,
+              stopOnMouseEnter: true,
+            }),
+          ]"
         >
-          <TestimonialCard
-            :quote="testimonials[0].quote"
-            :author="testimonials[0].author"
-            :title="testimonials[0].title"
-            :avatar="testimonials[0].avatar"
-          />
-        </motion.div>
-
-        <!-- Other Testimonials -->
-        <div class="space-y-8">
-          <motion.div
-            v-for="(testimonial, index) in testimonials.slice(1)"
-            :key="testimonial.author"
-            :initial="{ opacity: 0, y: 50 }"
-            :while-in-view="{ opacity: 1, y: 0 }"
-            :transition="{ duration: 0.7, delay: 0.3 + index * 0.1 }"
-          >
-            <TestimonialCard
-              :quote="testimonial.quote"
-              :author="testimonial.author"
-              :title="testimonial.title"
-              :avatar="testimonial.avatar"
-            />
-          </motion.div>
-        </div>
-      </div>
+          <CarouselContent>
+            <CarouselItem
+              v-for="(testimonial, index) in testimonials"
+              :key="index"
+              class="md:basis-1/2 lg:basis-1/3"
+            >
+              <div class="p-2 h-full">
+                <TestimonialCard
+                  :quote="testimonial.quote"
+                  :author="testimonial.author"
+                  :title="testimonial.title"
+                  :avatar="testimonial.avatar"
+                  class="h-full"
+                />
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious class="absolute left-[-50px] top-1/2 -translate-y-1/2" />
+          <CarouselNext class="absolute right-[-50px] top-1/2 -translate-y-1/2" />
+        </Carousel>
+      </motion.div>
     </div>
   </section>
 </template>

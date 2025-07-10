@@ -69,7 +69,7 @@ const routes = [
         ></span>
       </RouterLink>
 
-      <div class="w-6"></div>
+      <div class="w-1"></div>
 
       <template v-if="!auth.isLoggedIn">
         <Button variant="ghost" size="sm" asChild>
