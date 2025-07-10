@@ -16,6 +16,11 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
     {
+      path: '/team/:name',
+      name: 'team-detail',
+      component: () => import('../views/TeamDetailView.vue'),
+    },
+    {
       path: '/products',
       name: 'products',
       component: () => import('../views/ProductsView.vue'),
@@ -51,15 +56,15 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue'),
     },
     {
+      path: '/chatbot',
+      name: 'chatbot',
+      component: () => import('../views/ChatbotView.vue'),
+    },
+    {
       path: '/protected',
       name: 'protected',
       component: () => import('../views/ProtectedView.vue'),
       meta: { requiresAuth: true },
-    },
-    {
-      path: '/chatbot',
-      name: 'chatbot',
-      component: () => import('../views/ChatbotView.vue'),
     },
     {
       path: '/privacy-policy',
@@ -72,11 +77,18 @@ const router = createRouter({
       component: () => import('../views/TermsOfServiceView.vue'),
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  },
 })
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
-  if (to.meta.requiresAuth && !auth.isLoggedIn) {
+  if (to.matched.some(record => record.meta.requiresAuth) && !auth.isLoggedIn) {
     next({ name: 'login' })
   } else {
     next()

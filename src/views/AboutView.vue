@@ -2,36 +2,17 @@
 import { motion } from 'motion-v'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Twitter, Linkedin } from 'lucide-vue-next'
+import { useTeamStore } from '@/stores/team'
+import { RouterLink } from 'vue-router'
 
-const teamMembers = [
-  {
-    name: 'Rachmat S. haryadi',
-    role: 'Lead Developer',
-    avatar: 'https://i.pravatar.cc/150?img=11',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-    },
-  },
-  {
-    name: 'Siti Aminah',
-    role: 'UI/UX Designer',
-    avatar: 'https://i.pravatar.cc/150?img=12',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-    },
-  },
-  {
-    name: 'Budi Hartono',
-    role: 'Project Manager',
-    avatar: 'https://i.pravatar.cc/150?img=13',
-    social: {
-      twitter: '#',
-      linkedin: '#',
-    },
-  },
-]
+const teamStore = useTeamStore()
+const teamMembers = teamStore.members
+
+const slugify = (name: string) => {
+  return name.toLowerCase().replace(/\s+/g, '-')
+}
 
 const timeline = [
   {
@@ -144,29 +125,41 @@ const timeline = [
         <h2 class="text-3xl font-bold">Meet Our Team</h2>
         <p class="text-muted-foreground mt-2">The talented people behind our success.</p>
       </motion.div>
-      <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <motion.div
+      <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <RouterLink
           v-for="(member, index) in teamMembers"
-          :key="member.name"
-          :initial="{ opacity: 0, y: 20 }"
-          :while-in-view="{ opacity: 1, y: 0 }"
-          :transition="{ duration: 0.5, delay: 0.1 * index }"
+          :key="member.id"
+          :to="`/team/${slugify(member.name)}`"
+          class="group relative"
         >
-          <Card class="text-center hover:shadow-xl transition-shadow duration-300">
-            <CardContent class="pt-6">
-              <Avatar class="w-24 h-24 mx-auto mb-4">
-                <AvatarImage :src="member.avatar" :alt="member.name" />
-                <AvatarFallback>{{ member.name.charAt(0) }}</AvatarFallback>
-              </Avatar>
-              <h3 class="text-lg font-semibold">{{ member.name }}</h3>
-              <p class="text-primary">{{ member.role }}</p>
-              <div class="mt-4 flex justify-center gap-4">
-                <a :href="member.social.twitter" class="text-muted-foreground hover:text-primary">Twitter</a>
-                <a :href="member.social.linkedin" class="text-muted-foreground hover:text-primary">LinkedIn</a>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+          <motion.div
+            class="h-full"
+            :initial="{ opacity: 0, y: 30, scale: 0.95 }"
+            :while-in-view="{ opacity: 1, y: 0, scale: 1 }"
+            :transition="{ duration: 0.5, delay: 0.1 * index }"
+          >
+            <Card class="h-full text-center transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2 bg-muted/20 border-transparent">
+              <CardContent class="pt-8">
+                <div class="relative inline-block">
+                  <Avatar class="w-28 h-28 mx-auto mb-4 border-4 border-background group-hover:border-primary transition-colors duration-300">
+                    <AvatarImage :src="member.avatar" :alt="member.name" />
+                    <AvatarFallback>{{ member.name.charAt(0) }}</AvatarFallback>
+                  </Avatar>
+                </div>
+                <h3 class="text-xl font-bold">{{ member.name }}</h3>
+                <Badge variant="secondary" class="mt-1">{{ member.role }}</Badge>
+                <div class="mt-5 flex justify-center gap-4">
+                  <a :href="member.social.twitter" class="text-muted-foreground hover:text-primary transition-colors duration-300">
+                    <Twitter class="h-5 w-5" />
+                  </a>
+                  <a :href="member.social.linkedin" class="text-muted-foreground hover:text-primary transition-colors duration-300">
+                    <Linkedin class="h-5 w-5" />
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </RouterLink>
       </div>
     </div>
   </div>
