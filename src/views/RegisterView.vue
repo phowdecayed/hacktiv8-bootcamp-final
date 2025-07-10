@@ -68,7 +68,7 @@ const handleRegister = async () => {
                   <Label for="password">Password</Label>
                   <Input id="password" v-model="password" type="password" required placeholder="Create a password" />
                 </div>
-                <Button @click="handleRegister" class="w-full !mt-6" :disabled="isLoading">
+                <Button type="submit" class="w-full !mt-6" :disabled="isLoading">
                   <span v-if="isLoading">Registering...</span>
                   <span v-else>Register</span>
                 </Button>

@@ -7,7 +7,7 @@ import Chatbot from '@/components/ui/chatbot/Chatbot.vue'
 import { Button } from '@/components/ui/button'
 import { ArrowUp } from 'lucide-vue-next'
 import { motion } from 'motion-v'
-import { Toaster } from '@/components/ui/sonner'
+import { Toaster } from 'vue-sonner'
 
 const showChatbot = ref(false)
 const showScrollTop = ref(false)

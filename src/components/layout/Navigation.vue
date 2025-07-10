@@ -59,6 +59,10 @@ const routes = [
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <RouterLink to="/protected">Protected Page</RouterLink>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem @click="auth.logout()">
             Log out
           </DropdownMenuItem>
