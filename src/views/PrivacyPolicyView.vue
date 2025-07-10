@@ -45,10 +45,10 @@ import LegalLayout from '@/components/layout/LegalLayout.vue'
 
     <h2>4. Security of Your Information</h2>
     <p>
-      We use administrative, technical, and physical security measures to help protect your
-      personal information. While we have taken reasonable steps to secure the personal information
-      you provide to us, please be aware that despite our efforts, no security measures are perfect
-      or impenetrable.
+      We use administrative, technical, and physical security measures to help protect your personal
+      information. While we have taken reasonable steps to secure the personal information you
+      provide to us, please be aware that despite our efforts, no security measures are perfect or
+      impenetrable.
     </p>
   </LegalLayout>
 </template>

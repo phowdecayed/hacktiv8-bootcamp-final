@@ -21,7 +21,9 @@ function closeWindow() {
 </script>
 
 <template>
-  <div class="relative min-h-[calc(100vh-4rem)] w-full overflow-hidden bg-background flex items-center justify-center p-4">
+  <div
+    class="relative min-h-[calc(100vh-4rem)] w-full overflow-hidden bg-background flex items-center justify-center p-4"
+  >
     <!-- Particle Background -->
     <div class="absolute inset-0 z-0">
       <Particles
@@ -40,16 +42,20 @@ function closeWindow() {
       :transition="{ type: 'spring', stiffness: 80, damping: 20, duration: 1 }"
     >
       <!-- Window Header -->
-      <div class="flex-shrink-0 h-11 flex items-center justify-between px-4 border-b border-white/10">
+      <div
+        class="flex-shrink-0 h-11 flex items-center justify-between px-4 border-b border-white/10"
+      >
         <div class="flex items-center gap-2">
-          <button @click="closeWindow" class="h-3 w-3 rounded-full bg-red-500 hover:bg-red-600 transition-colors"></button>
+          <button
+            @click="closeWindow"
+            class="h-3 w-3 rounded-full bg-red-500 hover:bg-red-600 transition-colors"
+          ></button>
           <span class="h-3 w-3 rounded-full bg-yellow-500"></span>
           <span class="h-3 w-3 rounded-full bg-green-500"></span>
         </div>
-        <div class="text-sm text-muted-foreground font-medium">
-          AI Assistant
-        </div>
-        <div class="w-14"></div> <!-- Spacer -->
+        <div class="text-sm text-muted-foreground font-medium">AI Assistant</div>
+        <div class="w-14"></div>
+        <!-- Spacer -->
       </div>
 
       <!-- Iframe Content -->

@@ -101,7 +101,10 @@ const routes = [
               </RouterLink>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem @click="auth.logout()" class="flex items-center cursor-pointer text-destructive focus:text-destructive">
+            <DropdownMenuItem
+              @click="auth.logout()"
+              class="flex items-center cursor-pointer text-destructive focus:text-destructive"
+            >
               <LogOut class="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

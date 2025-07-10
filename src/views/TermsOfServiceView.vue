@@ -6,9 +6,9 @@ import LegalLayout from '@/components/layout/LegalLayout.vue'
   <LegalLayout title="Terms of Service" lastUpdated="July 10, 2025">
     <h2>1. Agreement to Terms</h2>
     <p>
-      By using our services, you agree to be bound by these Terms of Service. If you do not agree
-      to these terms, please do not use our services. We may update these terms from time to time,
-      and your continued use of the services constitutes acceptance of those changes.
+      By using our services, you agree to be bound by these Terms of Service. If you do not agree to
+      these terms, please do not use our services. We may update these terms from time to time, and
+      your continued use of the services constitutes acceptance of those changes.
     </p>
 
     <h2>2. User Accounts</h2>
