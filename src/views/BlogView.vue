@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { blogPosts, type BlogPost } from '@/lib/blog-data'
 import BlogPostCard from '@/components/blog/BlogPostCard.vue'
 import BlogPostListItem from '@/components/blog/BlogPostListItem.vue'
 import BlogSearch from '@/components/blog/BlogSearch.vue'
+import BlogPostCardSkeleton from '@/components/blog/BlogPostCardSkeleton.vue'
+import BlogPostListItemSkeleton from '@/components/blog/BlogPostListItemSkeleton.vue'
 import { Button } from '@/components/ui/button'
 import { LayoutGrid, List } from 'lucide-vue-next'
 import { motion } from 'motion-v'
@@ -12,6 +14,7 @@ type ViewMode = 'grid' | 'list'
 
 const searchTerm = ref('')
 const viewMode = ref<ViewMode>('grid')
+const isLoading = ref(true)
 
 const filteredPosts = computed(() => {
   if (!searchTerm.value) {
@@ -28,6 +31,12 @@ const filteredPosts = computed(() => {
 function setViewMode(mode: ViewMode) {
   viewMode.value = mode
 }
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1500)
+})
 </script>
 
 <template>
@@ -71,7 +80,26 @@ function setViewMode(mode: ViewMode) {
         </div>
       </div>
 
+      <!-- Skeleton Loader -->
+      <div v-if="isLoading">
+        <div
+          v-if="viewMode === 'grid'"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          <BlogPostCardSkeleton v-for="n in 6" :key="`sk-grid-${n}`" />
+        </div>
+        <div v-else class="flex flex-col gap-8">
+          <BlogPostListItemSkeleton
+            v-for="n in 4"
+            :key="`sk-list-${n}`"
+            :image-position="n % 2 === 0 ? 'right' : 'left'"
+          />
+        </div>
+      </div>
+
+      <!-- Content -->
       <motion.div
+        v-else
         :key="viewMode"
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 1 }"
@@ -90,11 +118,18 @@ function setViewMode(mode: ViewMode) {
           :transition="{ duration: 0.5, delay: index * 0.05 }"
         >
           <BlogPostCard v-if="viewMode === 'grid'" :post="post" />
-          <BlogPostListItem v-else :post="post" :image-position="index % 2 === 0 ? 'left' : 'right'" />
+          <BlogPostListItem
+            v-else
+            :post="post"
+            :image-position="index % 2 === 0 ? 'left' : 'right'"
+          />
         </motion.div>
       </motion.div>
 
-      <div v-if="filteredPosts.length === 0" class="text-center py-16 text-muted-foreground">
+      <div
+        v-if="!isLoading && filteredPosts.length === 0"
+        class="text-center py-16 text-muted-foreground"
+      >
         <p class="text-xl">No articles found for "{{ searchTerm }}".</p>
         <p>Try searching for something else.</p>
       </div>
