@@ -13,6 +13,14 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog'
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -22,7 +30,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Check, Trash2, Search, RefreshCw } from 'lucide-vue-next'
+import { Check, Trash2, Search, RefreshCw, Eye } from 'lucide-vue-next'
 
 type FilterStatus = 'all' | 'read' | 'unread'
 
@@ -31,6 +39,8 @@ const contactStore = useContactStore()
 
 const searchTerm = ref('')
 const statusFilter = ref<FilterStatus>('all')
+const selectedMessage = ref<ContactMessage | null>(null)
+const isDetailViewOpen = ref(false)
 let refreshInterval: number | undefined
 
 const filteredMessages = computed(() => {
@@ -50,6 +60,7 @@ const filteredMessages = computed(() => {
       (msg) =>
         msg.name.toLowerCase().includes(lowerCaseSearch) ||
         msg.email.toLowerCase().includes(lowerCaseSearch) ||
+        msg.subject.toLowerCase().includes(lowerCaseSearch) ||
         msg.message.toLowerCase().includes(lowerCaseSearch),
     )
   }
@@ -59,6 +70,14 @@ const filteredMessages = computed(() => {
 
 const refreshMessages = () => {
   contactStore.refreshMessages()
+}
+
+const viewMessage = (msg: ContactMessage) => {
+  selectedMessage.value = msg
+  isDetailViewOpen.value = true
+  if (!msg.isRead) {
+    contactStore.markAsRead(msg.id)
+  }
 }
 
 onMounted(() => {
@@ -106,7 +125,9 @@ onUnmounted(() => {
           <CardContent>
             <div class="flex flex-col sm:flex-row gap-4 mb-6">
               <div class="relative w-full sm:max-w-sm">
-                <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <Search
+                  class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
+                />
                 <Input v-model="searchTerm" placeholder="Search messages..." class="pl-10" />
               </div>
               <Select v-model="statusFilter">
@@ -130,7 +151,7 @@ onUnmounted(() => {
                   <TableRow>
                     <TableHead class="w-[100px]">Status</TableHead>
                     <TableHead>Sender</TableHead>
-                    <TableHead>Message</TableHead>
+                    <TableHead>Subject</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead class="text-right">Actions</TableHead>
                   </TableRow>
@@ -140,7 +161,8 @@ onUnmounted(() => {
                     <TableRow
                       v-for="msg in filteredMessages"
                       :key="msg.id"
-                      :class="{ 'bg-muted/50': msg.isRead }"
+                      :class="{ 'bg-muted/50': msg.isRead, 'cursor-pointer': true }"
+                      @click="viewMessage(msg)"
                     >
                       <TableCell>
                         <Badge :variant="msg.isRead ? 'secondary' : 'default'">
@@ -151,12 +173,23 @@ onUnmounted(() => {
                         <div class="font-medium">{{ msg.name }}</div>
                         <div class="text-sm text-muted-foreground">{{ msg.email }}</div>
                       </TableCell>
-                      <TableCell class="max-w-sm truncate" :title="msg.message">{{ msg.message }}</TableCell>
+                      <TableCell class="max-w-sm truncate" :title="msg.subject">
+                        {{ msg.subject }}
+                      </TableCell>
                       <TableCell>{{ msg.date }}</TableCell>
                       <TableCell class="text-right">
                         <Button
+                          @click.stop="viewMessage(msg)"
+                          variant="ghost"
+                          size="icon"
+                          class="mr-2"
+                          title="View message"
+                        >
+                          <Eye class="w-4 h-4" />
+                        </Button>
+                        <Button
                           v-if="!msg.isRead"
-                          @click="contactStore.markAsRead(msg.id)"
+                          @click.stop="contactStore.markAsRead(msg.id)"
                           variant="ghost"
                           size="icon"
                           class="mr-2"
@@ -165,7 +198,7 @@ onUnmounted(() => {
                           <Check class="w-4 h-4" />
                         </Button>
                         <Button
-                          @click="contactStore.deleteMessage(msg.id)"
+                          @click.stop="contactStore.deleteMessage(msg.id)"
                           variant="ghost"
                           size="icon"
                           class="text-destructive hover:text-destructive"
@@ -188,5 +221,22 @@ onUnmounted(() => {
         </Card>
       </motion.div>
     </div>
+
+    <!-- Message Detail Dialog -->
+    <Dialog v-model:open="isDetailViewOpen">
+      <DialogContent v-if="selectedMessage" class="sm:max-w-[625px]">
+        <DialogHeader>
+          <DialogTitle>{{ selectedMessage.subject }}</DialogTitle>
+          <DialogDescription>
+            From: {{ selectedMessage.name }} ({{ selectedMessage.email }}) on
+            {{ selectedMessage.date }}
+          </DialogDescription>
+        </DialogHeader>
+        <div class="py-4 whitespace-pre-wrap">{{ selectedMessage.message }}</div>
+        <DialogFooter>
+          <Button @click="isDetailViewOpen = false">Close</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   </div>
 </template>

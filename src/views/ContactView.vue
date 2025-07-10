@@ -12,6 +12,7 @@ import { useContactStore } from '@/stores/contact'
 
 const name = ref('')
 const email = ref('')
+const subject = ref('')
 const message = ref('')
 const submitted = ref(false)
 const isMapLoading = ref(true)
@@ -19,13 +20,14 @@ const isMapLoading = ref(true)
 const contactStore = useContactStore()
 
 const submitForm = () => {
-  contactStore.addMessage(name.value, email.value, message.value)
+  contactStore.addMessage(name.value, email.value, subject.value, message.value)
   submitted.value = true
   
   // Reset form after a few seconds
   setTimeout(() => {
     name.value = ''
     email.value = ''
+    subject.value = ''
     message.value = ''
     submitted.value = false
   }, 3000)
@@ -160,6 +162,10 @@ onMounted(() => {
                     required
                     placeholder="nama@email.com"
                   />
+                </div>
+                <div class="space-y-2">
+                  <label for="subject" class="font-medium">Subjek</label>
+                  <Input id="subject" v-model="subject" required placeholder="Masukkan subjek pesan" />
                 </div>
                 <div class="space-y-2">
                   <label for="message" class="font-medium">Pesan</label>

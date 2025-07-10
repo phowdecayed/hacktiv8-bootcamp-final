@@ -5,6 +5,7 @@ export interface ContactMessage {
   id: string
   name: string
   email: string
+  subject: string
   message: string
   date: string
   isRead: boolean
@@ -28,11 +29,12 @@ export const useContactStore = defineStore('contact', () => {
     { deep: true },
   )
 
-  function addMessage(name: string, email: string, message: string) {
+  function addMessage(name: string, email: string, subject: string, message: string) {
     const newMessage: ContactMessage = {
       id: new Date().toISOString(),
       name,
       email,
+      subject,
       message,
       date: new Date().toLocaleString('id-ID'),
       isRead: false,
@@ -61,15 +63,16 @@ export const useContactStore = defineStore('contact', () => {
   function seedMessages() {
     if (messages.value.length > 0) return
 
-    const seedData: Omit<ContactMessage, 'id' | 'date' | 'isRead'>[] = [
+    const seedData: Omit<ContactMessage, 'id' | 'date' | 'isRead' | 'subject'>[] = [
       { name: 'Alice Johnson', email: 'alice@example.com', message: 'I have a question about your web development services. Can you provide more details on the technologies you use?' },
       { name: 'Bob Williams', email: 'bob@example.com', message: 'Interested in a collaboration for a mobile app project. Please get in touch.' },
       { name: 'Charlie Brown', email: 'charlie@example.com', message: 'Great portfolio! I would like to get a quote for a UI/UX design for my e-commerce site.' },
       { name: 'Diana Miller', email: 'diana@example.com', message: 'What is the typical timeline for a standard cloud solution implementation?' },
     ]
 
-    seedData.forEach(data => {
-        addMessage(data.name, data.email, data.message)
+    seedData.forEach((data, index) => {
+        const subjects = ["Web Development Inquiry", "Collaboration Opportunity", "Quotation Request", "Question about Cloud Solutions"];
+        addMessage(data.name, data.email, subjects[index] || "General Inquiry", data.message)
     })
     
     // Mark one as read for demonstration
