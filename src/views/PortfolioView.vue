@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { motion } from 'motion-v'
 import { Button } from '@/components/ui/button'
 import { RouterLink } from 'vue-router'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import PortfolioCardSkeleton from '@/components/portfolio/PortfolioCardSkeleton.vue'
 
 const portfolioItems = [
   { id: 'alpha', title: 'Project Alpha', category: 'Web App', description: 'A web application for managing complex data streams.', imageUrl: 'https://picsum.photos/seed/project1/600/400' },
@@ -15,12 +17,20 @@ const portfolioItems = [
 
 const categories = ['All', 'Web App', 'Mobile App', 'E-commerce', 'Cloud']
 const activeCategory = ref('All')
+const isLoading = ref(true)
 
 const filteredItems = computed(() => {
   if (activeCategory.value === 'All') {
     return portfolioItems
   }
   return portfolioItems.filter(item => item.category === activeCategory.value)
+})
+
+onMounted(() => {
+  // Simulate a network request
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1500)
 })
 </script>
 
@@ -57,7 +67,10 @@ const filteredItems = computed(() => {
 
     <!-- Portfolio Grid -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div v-if="isLoading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <PortfolioCardSkeleton v-for="n in 6" :key="n" />
+      </div>
+      <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <motion.div
           v-for="item in filteredItems"
           :key="item.id"

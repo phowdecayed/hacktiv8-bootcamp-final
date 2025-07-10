@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
 import { motion } from 'motion-v'
 import { Button } from '@/components/ui/button'
 import { RouterLink } from 'vue-router'
+import ProductCardSkeleton from '@/components/products/ProductCardSkeleton.vue'
 
 const services = [
   {
@@ -29,6 +31,15 @@ const services = [
     imageUrl: 'https://picsum.photos/seed/cloud/800/600',
   },
 ]
+
+const isLoading = ref(true)
+
+onMounted(() => {
+  // Simulate a network request
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1500)
+})
 </script>
 
 <template>
@@ -50,7 +61,10 @@ const services = [
 
     <!-- Services Section -->
     <div class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="space-y-24">
+      <div v-if="isLoading" class="space-y-24">
+        <ProductCardSkeleton v-for="n in 4" :key="n" />
+      </div>
+      <div v-else class="space-y-24">
         <motion.div
           v-for="(service, index) in services"
           :key="service.id"
