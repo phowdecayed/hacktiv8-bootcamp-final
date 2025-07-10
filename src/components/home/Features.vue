@@ -24,7 +24,7 @@ const activeFeatureIndex = ref(0)
   <section id="features" class="py-24 bg-background">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 gap-12 items-start">
-        <div class="sticky top-24">
+        <div class="md:sticky top-24 mb-12">
           <motion.div
             :initial="{ opacity: 0, x: -50 }"
             :while-in-view="{ opacity: 1, x: 0 }"
