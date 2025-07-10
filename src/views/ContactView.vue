@@ -22,7 +22,7 @@ const contactStore = useContactStore()
 const submitForm = () => {
   contactStore.addMessage(name.value, email.value, subject.value, message.value)
   submitted.value = true
-  
+
   // Reset form after a few seconds
   setTimeout(() => {
     name.value = ''
@@ -165,7 +165,12 @@ onMounted(() => {
                 </div>
                 <div class="space-y-2">
                   <label for="subject" class="font-medium">Subjek</label>
-                  <Input id="subject" v-model="subject" required placeholder="Masukkan subjek pesan" />
+                  <Input
+                    id="subject"
+                    v-model="subject"
+                    required
+                    placeholder="Masukkan subjek pesan"
+                  />
                 </div>
                 <div class="space-y-2">
                   <label for="message" class="font-medium">Pesan</label>

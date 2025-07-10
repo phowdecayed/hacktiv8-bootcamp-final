@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import type { BlogPost } from '@/lib/blog-data'
 import { ArrowRight } from 'lucide-vue-next'
 
@@ -39,7 +33,9 @@ defineProps<{
           <p class="font-semibold">{{ post.author.name }}</p>
           <p>{{ post.date }}</p>
         </div>
-        <div class="flex items-center gap-1 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div
+          class="flex items-center gap-1 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        >
           <span>Read More</span>
           <ArrowRight class="w-4 h-4" />
         </div>

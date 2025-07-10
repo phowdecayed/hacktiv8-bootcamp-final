@@ -5,7 +5,16 @@ import { blogPosts } from '@/lib/blog-data'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ArrowLeft, Calendar, User, Tag, Share2, Twitter, Linkedin, Facebook } from 'lucide-vue-next'
+import {
+  ArrowLeft,
+  Calendar,
+  User,
+  Tag,
+  Share2,
+  Twitter,
+  Linkedin,
+  Facebook,
+} from 'lucide-vue-next'
 import { motion } from 'motion-v'
 
 const route = useRoute()
@@ -17,9 +26,7 @@ const post = computed(() => {
 
 const relatedPosts = computed(() => {
   if (!post.value) return []
-  return blogPosts
-    .filter((p) => p.id !== post.value?.id)
-    .slice(0, 3) // Get 3 other posts
+  return blogPosts.filter((p) => p.id !== post.value?.id).slice(0, 3) // Get 3 other posts
 })
 
 watch(
@@ -126,11 +133,16 @@ watch(
             <h3 class="text-xl font-bold mb-4">Related Posts</h3>
             <ul class="space-y-4">
               <li v-for="related in relatedPosts" :key="related.id">
-                <RouterLink :to="`/blog/${related.id}`" class="hover:text-primary transition-colors group">
+                <RouterLink
+                  :to="`/blog/${related.id}`"
+                  class="hover:text-primary transition-colors group"
+                >
                   <div class="flex gap-4">
                     <img :src="related.imageUrl" class="w-20 h-20 object-cover rounded-md" />
                     <div>
-                      <p class="font-semibold leading-tight group-hover:underline">{{ related.title }}</p>
+                      <p class="font-semibold leading-tight group-hover:underline">
+                        {{ related.title }}
+                      </p>
                       <p class="text-sm text-muted-foreground mt-1">{{ related.date }}</p>
                     </div>
                   </div>

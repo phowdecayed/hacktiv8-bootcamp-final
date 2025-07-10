@@ -10,10 +10,7 @@ defineProps<{
 <template>
   <Card class="overflow-hidden">
     <div class="grid md:grid-cols-3">
-      <div
-        class="md:col-span-1"
-        :class="{ 'md:order-last': imagePosition === 'right' }"
-      >
+      <div class="md:col-span-1" :class="{ 'md:order-last': imagePosition === 'right' }">
         <Skeleton class="w-full h-48 md:h-full" />
       </div>
       <div class="md:col-span-2 flex flex-col">

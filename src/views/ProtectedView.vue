@@ -3,7 +3,14 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { motion } from 'motion-v'
 import { useAuthStore } from '@/stores/auth'
 import { useContactStore, type ContactMessage } from '@/stores/contact'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -38,13 +45,13 @@ const isDetailViewOpen = ref(false)
 let refreshInterval: number | undefined
 
 const filteredMessages = computed(() => {
-  let messages = [...contactStore.messages].sort((a, b) => new Date(b.id).getTime() - new Date(a.id).getTime())
+  let messages = [...contactStore.messages].sort(
+    (a, b) => new Date(b.id).getTime() - new Date(a.id).getTime(),
+  )
 
   // Apply status filter
   if (statusFilter.value !== 'all') {
-    messages = messages.filter((msg) =>
-      statusFilter.value === 'read' ? msg.isRead : !msg.isRead,
-    )
+    messages = messages.filter((msg) => (statusFilter.value === 'read' ? msg.isRead : !msg.isRead))
   }
 
   // Apply search term
@@ -101,9 +108,7 @@ onUnmounted(() => {
       :animate="{ opacity: 1, y: 0 }"
       :transition="{ duration: 0.8 }"
     >
-      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-        Admin Inbox
-      </h1>
+      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">Admin Inbox</h1>
       <p class="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
         Welcome, {{ authStore.user }}. Manage your contact messages efficiently.
       </p>
@@ -113,9 +118,7 @@ onUnmounted(() => {
       <Card class="overflow-hidden">
         <CardHeader class="border-b">
           <CardTitle>Contact Messages</CardTitle>
-          <CardDescription>
-            Browse and manage messages from the contact form.
-          </CardDescription>
+          <CardDescription> Browse and manage messages from the contact form. </CardDescription>
         </CardHeader>
         <div class="p-6">
           <div class="flex flex-col sm:flex-row gap-4 mb-6">
@@ -123,7 +126,11 @@ onUnmounted(() => {
               <Search
                 class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
               />
-              <Input v-model="searchTerm" placeholder="Search by name, email, subject..." class="pl-10" />
+              <Input
+                v-model="searchTerm"
+                placeholder="Search by name, email, subject..."
+                class="pl-10"
+              />
             </div>
             <Select v-model="statusFilter">
               <SelectTrigger class="w-full sm:w-[180px]">
@@ -143,7 +150,9 @@ onUnmounted(() => {
 
           <div class="border rounded-lg">
             <!-- Inbox Table Header -->
-            <div class="p-4 hidden sm:flex border-b bg-muted/50 text-sm font-medium text-muted-foreground items-center gap-4">
+            <div
+              class="p-4 hidden sm:flex border-b bg-muted/50 text-sm font-medium text-muted-foreground items-center gap-4"
+            >
               <div class="flex items-center gap-4 flex-1">
                 <div class="flex items-center gap-2 invisible">
                   <span class="w-2 h-2 rounded-full"></span>
@@ -156,16 +165,12 @@ onUnmounted(() => {
                 </div>
               </div>
               <div class="flex items-center gap-2 ml-auto invisible">
-                  <Button variant="ghost" size="icon"><MailOpen class="w-5 h-5" /></Button>
-                  <Button variant="ghost" size="icon"><Trash2 class="w-5 h-5" /></Button>
+                <Button variant="ghost" size="icon"><MailOpen class="w-5 h-5" /></Button>
+                <Button variant="ghost" size="icon"><Trash2 class="w-5 h-5" /></Button>
               </div>
             </div>
 
-            <transition-group
-              tag="div"
-              name="message-list"
-              class="divide-y"
-            >
+            <transition-group tag="div" name="message-list" class="divide-y">
               <div
                 v-for="msg in filteredMessages"
                 :key="msg.id"
@@ -185,14 +190,30 @@ onUnmounted(() => {
                   </div>
                   <div class="flex-1 grid grid-cols-12 gap-2 items-center">
                     <div class="col-span-12 sm:col-span-3">
-                      <p class="truncate" :class="{ 'text-foreground': !msg.isRead, 'text-muted-foreground': msg.isRead }">{{ msg.name }}</p>
+                      <p
+                        class="truncate"
+                        :class="{
+                          'text-foreground': !msg.isRead,
+                          'text-muted-foreground': msg.isRead,
+                        }"
+                      >
+                        {{ msg.name }}
+                      </p>
                     </div>
                     <div class="col-span-12 sm:col-span-6">
-                      <p class="truncate" :class="{ 'text-foreground': !msg.isRead, 'text-muted-foreground': msg.isRead }">
+                      <p
+                        class="truncate"
+                        :class="{
+                          'text-foreground': !msg.isRead,
+                          'text-muted-foreground': msg.isRead,
+                        }"
+                      >
                         {{ msg.subject }}
                       </p>
                     </div>
-                    <div class="col-span-12 sm:col-span-3 text-sm text-muted-foreground text-left sm:text-right">
+                    <div
+                      class="col-span-12 sm:col-span-3 text-sm text-muted-foreground text-left sm:text-right"
+                    >
                       {{ msg.date }}
                     </div>
                   </div>
@@ -238,8 +259,11 @@ onUnmounted(() => {
             <div class="flex-1">
               <DialogTitle class="text-2xl mb-1">{{ selectedMessage.subject }}</DialogTitle>
               <DialogDescription>
-                From: <span class="font-medium text-foreground">{{ selectedMessage.name }}</span> ({{ selectedMessage.email }})
-                <br>
+                From:
+                <span class="font-medium text-foreground">{{ selectedMessage.name }}</span> ({{
+                  selectedMessage.email
+                }})
+                <br />
                 Received on: {{ selectedMessage.date }}
               </DialogDescription>
             </div>
@@ -253,7 +277,9 @@ onUnmounted(() => {
           {{ selectedMessage.message }}
         </div>
         <Separator />
-        <DialogFooter class="p-4 bg-muted/50 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
+        <DialogFooter
+          class="p-4 bg-muted/50 flex flex-col-reverse sm:flex-row sm:justify-end gap-2"
+        >
           <Button @click="isDetailViewOpen = false" variant="outline">Close</Button>
           <Button @click="contactStore.toggleReadStatus(selectedMessage!.id)" variant="secondary">
             <MailOpen v-if="selectedMessage.isRead" class="w-4 h-4 mr-2" />

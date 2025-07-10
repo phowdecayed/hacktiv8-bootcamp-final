@@ -71,22 +71,53 @@ export const useContactStore = defineStore('contact', () => {
     if (messages.value.length > 0) return
 
     const seedData: Omit<ContactMessage, 'id' | 'date' | 'isRead' | 'subject'>[] = [
-      { name: 'Alice Johnson', email: 'alice@example.com', message: 'I have a question about your web development services. Can you provide more details on the technologies you use?' },
-      { name: 'Bob Williams', email: 'bob@example.com', message: 'Interested in a collaboration for a mobile app project. Please get in touch.' },
-      { name: 'Charlie Brown', email: 'charlie@example.com', message: 'Great portfolio! I would like to get a quote for a UI/UX design for my e-commerce site.' },
-      { name: 'Diana Miller', email: 'diana@example.com', message: 'What is the typical timeline for a standard cloud solution implementation?' },
+      {
+        name: 'Alice Johnson',
+        email: 'alice@example.com',
+        message:
+          'I have a question about your web development services. Can you provide more details on the technologies you use?',
+      },
+      {
+        name: 'Bob Williams',
+        email: 'bob@example.com',
+        message: 'Interested in a collaboration for a mobile app project. Please get in touch.',
+      },
+      {
+        name: 'Charlie Brown',
+        email: 'charlie@example.com',
+        message:
+          'Great portfolio! I would like to get a quote for a UI/UX design for my e-commerce site.',
+      },
+      {
+        name: 'Diana Miller',
+        email: 'diana@example.com',
+        message: 'What is the typical timeline for a standard cloud solution implementation?',
+      },
     ]
 
     seedData.forEach((data, index) => {
-        const subjects = ["Web Development Inquiry", "Collaboration Opportunity", "Quotation Request", "Question about Cloud Solutions"];
-        addMessage(data.name, data.email, subjects[index] || "General Inquiry", data.message)
+      const subjects = [
+        'Web Development Inquiry',
+        'Collaboration Opportunity',
+        'Quotation Request',
+        'Question about Cloud Solutions',
+      ]
+      addMessage(data.name, data.email, subjects[index] || 'General Inquiry', data.message)
     })
-    
+
     // Mark one as read for demonstration
-    if(messages.value.length > 2) {
-        messages.value[2].isRead = true;
+    if (messages.value.length > 2) {
+      messages.value[2].isRead = true
     }
   }
 
-  return { messages, addMessage, markAsRead, toggleReadStatus, deleteMessage, refreshMessages, seedMessages }
+  return {
+    messages,
+    addMessage,
+    markAsRead,
+    toggleReadStatus,
+    deleteMessage,
+    refreshMessages,
+    seedMessages,
+  }
 })
