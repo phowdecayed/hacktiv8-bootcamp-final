@@ -51,6 +51,13 @@ export const useContactStore = defineStore('contact', () => {
     messages.value = messages.value.filter((m) => m.id !== id)
   }
 
+  function refreshMessages() {
+    const storedMessages = localStorage.getItem('contactMessages')
+    if (storedMessages) {
+      messages.value = JSON.parse(storedMessages)
+    }
+  }
+
   function seedMessages() {
     if (messages.value.length > 0) return
 
@@ -71,5 +78,5 @@ export const useContactStore = defineStore('contact', () => {
     }
   }
 
-  return { messages, addMessage, markAsRead, deleteMessage, seedMessages }
+  return { messages, addMessage, markAsRead, deleteMessage, refreshMessages, seedMessages }
 })

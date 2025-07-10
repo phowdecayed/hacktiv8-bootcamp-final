@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { motion } from 'motion-v'
 import { useAuthStore } from '@/stores/auth'
 import { useContactStore, type ContactMessage } from '@/stores/contact'
@@ -22,7 +22,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Check, Trash2, Search } from 'lucide-vue-next'
+import { Check, Trash2, Search, RefreshCw } from 'lucide-vue-next'
 
 type FilterStatus = 'all' | 'read' | 'unread'
 
@@ -31,6 +31,7 @@ const contactStore = useContactStore()
 
 const searchTerm = ref('')
 const statusFilter = ref<FilterStatus>('all')
+let refreshInterval: number | undefined
 
 const filteredMessages = computed(() => {
   let messages = [...contactStore.messages]
@@ -54,6 +55,21 @@ const filteredMessages = computed(() => {
   }
 
   return messages
+})
+
+const refreshMessages = () => {
+  contactStore.refreshMessages()
+}
+
+onMounted(() => {
+  refreshMessages() // Initial refresh
+  refreshInterval = window.setInterval(refreshMessages, 5000) // Auto-refresh every 5 seconds
+})
+
+onUnmounted(() => {
+  if (refreshInterval) {
+    clearInterval(refreshInterval)
+  }
 })
 </script>
 
@@ -103,6 +119,9 @@ const filteredMessages = computed(() => {
                   <SelectItem value="read">Read</SelectItem>
                 </SelectContent>
               </Select>
+              <Button @click="refreshMessages" variant="outline" size="icon" title="Refresh messages">
+                <RefreshCw class="w-4 h-4" />
+              </Button>
             </div>
 
             <div class="border rounded-lg">
