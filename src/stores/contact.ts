@@ -49,6 +49,13 @@ export const useContactStore = defineStore('contact', () => {
     }
   }
 
+  function toggleReadStatus(id: string) {
+    const message = messages.value.find((m) => m.id === id)
+    if (message) {
+      message.isRead = !message.isRead
+    }
+  }
+
   function deleteMessage(id: string) {
     messages.value = messages.value.filter((m) => m.id !== id)
   }
@@ -81,5 +88,5 @@ export const useContactStore = defineStore('contact', () => {
     }
   }
 
-  return { messages, addMessage, markAsRead, deleteMessage, refreshMessages, seedMessages }
+  return { messages, addMessage, markAsRead, toggleReadStatus, deleteMessage, refreshMessages, seedMessages }
 })

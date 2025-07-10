@@ -30,7 +30,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Check, Trash2, Search, RefreshCw, Eye } from 'lucide-vue-next'
+import { Check, Trash2, Search, RefreshCw, Eye, MailOpen, Mail } from 'lucide-vue-next'
 
 type FilterStatus = 'all' | 'read' | 'unread'
 
@@ -179,23 +179,14 @@ onUnmounted(() => {
                       <TableCell>{{ msg.date }}</TableCell>
                       <TableCell class="text-right">
                         <Button
-                          @click.stop="viewMessage(msg)"
+                          @click.stop="contactStore.toggleReadStatus(msg.id)"
                           variant="ghost"
                           size="icon"
                           class="mr-2"
-                          title="View message"
+                          :title="msg.isRead ? 'Mark as unread' : 'Mark as read'"
                         >
-                          <Eye class="w-4 h-4" />
-                        </Button>
-                        <Button
-                          v-if="!msg.isRead"
-                          @click.stop="contactStore.markAsRead(msg.id)"
-                          variant="ghost"
-                          size="icon"
-                          class="mr-2"
-                          title="Mark as read"
-                        >
-                          <Check class="w-4 h-4" />
+                          <MailOpen v-if="!msg.isRead" class="w-4 h-4" />
+                          <Mail v-else class="w-4 h-4" />
                         </Button>
                         <Button
                           @click.stop="contactStore.deleteMessage(msg.id)"
