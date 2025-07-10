@@ -1,6 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  type NavigationGuardNext,
+  type RouteLocationNormalized,
+} from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from '@/stores/auth'
+import TeamDetailView from '@/views/TeamDetailView.vue'
+import FeatureDetailView from '@/views/FeatureDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +16,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/features/:slug',
+      name: 'feature-detail',
+      component: FeatureDetailView,
     },
     {
       path: '/about',
@@ -87,7 +99,7 @@ const router = createRouter({
       component: () => import('../views/TermsOfServiceView.vue'),
     },
   ],
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to: RouteLocationNormalized, from: RouteLocationNormalized, savedPosition: any) {
     if (savedPosition) {
       return savedPosition
     } else {
@@ -96,13 +108,15 @@ const router = createRouter({
   },
 })
 
-router.beforeEach((to, from, next) => {
-  const auth = useAuthStore()
-  if (to.matched.some((record) => record.meta.requiresAuth) && !auth.isLoggedIn) {
-    next({ name: 'login' })
-  } else {
-    next()
-  }
-})
+router.beforeEach(
+  (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+    const auth = useAuthStore()
+    if (to.matched.some((record) => record.meta.requiresAuth) && !auth.isLoggedIn) {
+      next({ name: 'login' })
+    } else {
+      next()
+    }
+  },
+)
 
 export default router
