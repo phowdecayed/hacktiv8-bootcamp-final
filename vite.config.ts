@@ -39,8 +39,8 @@ export default defineConfig({
         ],
       },
       manifest: {
-        name: 'Modern SPA',
-        short_name: 'ModernSPA',
+        name: 'MINIMALIST',
+        short_name: 'MINIMALIST',
         description: 'A modern single-page application.',
         theme_color: '#ffffff',
         icons: [

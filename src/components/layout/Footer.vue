@@ -3,7 +3,6 @@ import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { RouterLink } from 'vue-router'
-import { motion } from 'motion-v'
 import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-vue-next'
 
 defineOptions({
@@ -38,7 +37,7 @@ const socialLinks = [
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Company Info -->
         <div class="md:col-span-1">
-          <h3 class="text-lg font-semibold text-foreground mb-4">Modern SPA</h3>
+          <h3 class="text-lg font-semibold text-foreground mb-4">MIMINALIST</h3>
           <p class="text-sm">Building the future, one component at a time.</p>
         </div>
 
@@ -84,7 +83,7 @@ const socialLinks = [
         class="mt-16 pt-8 border-t border-border/50 flex flex-col sm:flex-row justify-between items-center"
       >
         <p class="text-sm">
-          &copy; {{ new Date().getFullYear() }} Modern SPA. All rights reserved.
+          &copy; {{ new Date().getFullYear() }} MIMINALIST. All rights reserved.
         </p>
         <div class="flex space-x-4 mt-4 sm:mt-0">
           <a
