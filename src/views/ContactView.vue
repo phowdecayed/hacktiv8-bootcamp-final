@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { motion } from 'motion-v'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useContactStore } from '@/stores/contact'
 
 const name = ref('')
 const email = ref('')
@@ -15,18 +16,19 @@ const message = ref('')
 const submitted = ref(false)
 const isMapLoading = ref(true)
 
+const contactStore = useContactStore()
+
 const submitForm = () => {
-  // Simulate form submission
+  contactStore.addMessage(name.value, email.value, message.value)
+  submitted.value = true
+  
+  // Reset form after a few seconds
   setTimeout(() => {
-    submitted.value = true
-    // Reset form after a few seconds
-    setTimeout(() => {
-      name.value = ''
-      email.value = ''
-      message.value = ''
-      submitted.value = false
-    }, 3000)
-  }, 500)
+    name.value = ''
+    email.value = ''
+    message.value = ''
+    submitted.value = false
+  }, 3000)
 }
 
 onMounted(() => {
