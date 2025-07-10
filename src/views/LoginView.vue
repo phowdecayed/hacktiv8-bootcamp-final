@@ -71,7 +71,7 @@ onMounted(() => {
                     placeholder="password"
                   />
                 </div>
-                <Button @click="handleLogin" class="w-full !mt-6">Login</Button>
+                <Button type="submit" class="w-full !mt-6">Login</Button>
               </form>
             </CardContent>
             <CardFooter class="text-center text-sm">

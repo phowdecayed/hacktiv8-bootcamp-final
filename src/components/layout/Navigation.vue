@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/stores/auth'
@@ -39,10 +39,6 @@ defineOptions({
   name: 'SiteNavigation',
 })
 
-const props = defineProps<{
-  hasScrolled?: boolean
-}>()
-
 const auth = useAuthStore()
 const isMobileMenuOpen = ref(false)
 
@@ -53,62 +49,41 @@ const routes = [
   { name: 'Portofolio', path: '/portfolio', icon: Briefcase },
   { name: 'Kontak', path: '/contact', icon: Mail },
 ]
-
-const navLinkClass = computed(() => {
-  return props.hasScrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2 text-sm'
-})
-
-const authButtonClass = computed(() => {
-  return props.hasScrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2 text-sm'
-})
-
-const avatarButtonClass = computed(() => {
-  return props.hasScrolled ? 'h-8 w-8' : 'h-9 w-9'
-})
 </script>
 
 <template>
   <div>
     <!-- Desktop Navigation -->
-    <nav class="hidden md:flex items-center space-x-1 transition-all duration-300">
-      <Button v-for="route in routes" :key="route.path" variant="ghost" asChild>
-        <RouterLink
-          :to="route.path"
-          class="font-medium transition-all duration-300"
-          :class="navLinkClass"
-          active-class="text-primary"
-          exact-active-class="text-primary"
-        >
-          {{ route.name }}
-        </RouterLink>
-      </Button>
+    <nav class="hidden md:flex items-center space-x-2">
+      <RouterLink
+        v-for="route in routes"
+        :key="route.path"
+        :to="route.path"
+        class="relative px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        active-class="text-primary"
+      >
+        <span>{{ route.name }}</span>
+        <span
+          class="absolute bottom-0 left-0 w-full h-0.5 bg-primary transform scale-x-0 transition-transform duration-300 ease-in-out"
+          :class="{ 'scale-x-100': $route.path === route.path }"
+        ></span>
+      </RouterLink>
+
+      <div class="w-6"></div>
+
       <template v-if="!auth.isLoggedIn">
-        <Button variant="ghost" asChild>
-          <RouterLink
-            to="/login"
-            class="font-medium transition-all duration-300"
-            :class="authButtonClass"
-            >Login</RouterLink
-          >
+        <Button variant="ghost" size="sm" asChild>
+          <RouterLink to="/login">Login</RouterLink>
         </Button>
-        <Button asChild>
-          <RouterLink
-            to="/register"
-            class="font-medium transition-all duration-300"
-            :class="authButtonClass"
-            >Register</RouterLink
-          >
+        <Button size="sm" asChild>
+          <RouterLink to="/register">Register</RouterLink>
         </Button>
       </template>
       <template v-else>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button
-              variant="ghost"
-              class="relative rounded-full transition-all duration-300"
-              :class="avatarButtonClass"
-            >
-              <Avatar :class="avatarButtonClass">
+            <Button variant="ghost" class="relative rounded-full h-9 w-9">
+              <Avatar class="h-9 w-9">
                 <AvatarImage src="https://i.pravatar.cc/150" alt="User Avatar" />
                 <AvatarFallback>{{ auth.user?.charAt(0).toUpperCase() }}</AvatarFallback>
               </Avatar>
@@ -116,9 +91,7 @@ const avatarButtonClass = computed(() => {
           </DropdownMenuTrigger>
           <DropdownMenuContent class="w-56" align="end">
             <DropdownMenuLabel class="font-normal">
-              <div class="flex flex-col space-y-1">
-                <p class="text-sm font-medium leading-none">Welcome, {{ auth.user }}</p>
-              </div>
+              <p class="text-sm font-medium leading-none">Welcome, {{ auth.user }}</p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
@@ -128,7 +101,7 @@ const avatarButtonClass = computed(() => {
               </RouterLink>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem @click="auth.logout()" class="flex items-center cursor-pointer">
+            <DropdownMenuItem @click="auth.logout()" class="flex items-center cursor-pointer text-destructive focus:text-destructive">
               <LogOut class="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>
