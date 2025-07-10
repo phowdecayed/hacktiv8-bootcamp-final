@@ -3,15 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { motion } from 'motion-v'
 import { useAuthStore } from '@/stores/auth'
 import { useContactStore, type ContactMessage } from '@/stores/contact'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -30,7 +22,9 @@ import {
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Check, Trash2, Search, RefreshCw, Eye, MailOpen, Mail } from 'lucide-vue-next'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Trash2, Search, RefreshCw, MailOpen, Mail, X } from 'lucide-vue-next'
+import { Separator } from '@/components/ui/separator'
 
 type FilterStatus = 'all' | 'read' | 'unread'
 
@@ -44,7 +38,7 @@ const isDetailViewOpen = ref(false)
 let refreshInterval: number | undefined
 
 const filteredMessages = computed(() => {
-  let messages = [...contactStore.messages]
+  let messages = [...contactStore.messages].sort((a, b) => new Date(b.id).getTime() - new Date(a.id).getTime())
 
   // Apply status filter
   if (statusFilter.value !== 'all') {
@@ -80,7 +74,13 @@ const viewMessage = (msg: ContactMessage) => {
   }
 }
 
+const deleteMessageFromDetail = (id: string) => {
+  contactStore.deleteMessage(id)
+  isDetailViewOpen.value = false
+}
+
 onMounted(() => {
+  contactStore.seedMessages()
   refreshMessages() // Initial refresh
   refreshInterval = window.setInterval(refreshMessages, 5000) // Auto-refresh every 5 seconds
 })
@@ -102,132 +102,163 @@ onUnmounted(() => {
       :transition="{ duration: 0.8 }"
     >
       <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-        Admin Dashboard
+        Admin Inbox
       </h1>
       <p class="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
-        Welcome, {{ authStore.user }}. Here are the latest updates.
+        Welcome, {{ authStore.user }}. Manage your contact messages efficiently.
       </p>
     </motion.div>
 
     <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <motion.div
-        :initial="{ opacity: 0, y: 30 }"
-        :animate="{ opacity: 1, y: 0 }"
-        :transition="{ type: 'spring', stiffness: 100, damping: 20, duration: 0.8 }"
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Form Messages</CardTitle>
-            <CardDescription>
-              Here are the messages submitted through the contact form.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div class="flex flex-col sm:flex-row gap-4 mb-6">
-              <div class="relative w-full sm:max-w-sm">
-                <Search
-                  class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
-                />
-                <Input v-model="searchTerm" placeholder="Search messages..." class="pl-10" />
-              </div>
-              <Select v-model="statusFilter">
-                <SelectTrigger class="w-full sm:w-[180px]">
-                  <SelectValue placeholder="Filter by status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="unread">Unread</SelectItem>
-                  <SelectItem value="read">Read</SelectItem>
-                </SelectContent>
-              </Select>
-              <Button @click="refreshMessages" variant="outline" size="icon" title="Refresh messages">
-                <RefreshCw class="w-4 h-4" />
-              </Button>
+      <Card class="overflow-hidden">
+        <CardHeader class="border-b">
+          <CardTitle>Contact Messages</CardTitle>
+          <CardDescription>
+            Browse and manage messages from the contact form.
+          </CardDescription>
+        </CardHeader>
+        <div class="p-6">
+          <div class="flex flex-col sm:flex-row gap-4 mb-6">
+            <div class="relative w-full sm:max-w-sm">
+              <Search
+                class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground"
+              />
+              <Input v-model="searchTerm" placeholder="Search by name, email, subject..." class="pl-10" />
             </div>
+            <Select v-model="statusFilter">
+              <SelectTrigger class="w-full sm:w-[180px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Statuses</SelectItem>
+                <SelectItem value="unread">Unread</SelectItem>
+                <SelectItem value="read">Read</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button @click="refreshMessages" variant="outline" class="w-full sm:w-auto">
+              <RefreshCw class="w-4 h-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
 
-            <div class="border rounded-lg">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead class="w-[100px]">Status</TableHead>
-                    <TableHead>Sender</TableHead>
-                    <TableHead>Subject</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead class="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  <template v-if="filteredMessages.length > 0">
-                    <TableRow
-                      v-for="msg in filteredMessages"
-                      :key="msg.id"
-                      :class="{ 'bg-muted/50': msg.isRead, 'cursor-pointer': true }"
-                      @click="viewMessage(msg)"
-                    >
-                      <TableCell>
-                        <Badge :variant="msg.isRead ? 'secondary' : 'default'">
-                          {{ msg.isRead ? 'Read' : 'Unread' }}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div class="font-medium">{{ msg.name }}</div>
-                        <div class="text-sm text-muted-foreground">{{ msg.email }}</div>
-                      </TableCell>
-                      <TableCell class="max-w-sm truncate" :title="msg.subject">
+          <div class="border rounded-lg">
+            <transition-group
+              tag="div"
+              name="message-list"
+              class="divide-y"
+            >
+              <div
+                v-for="msg in filteredMessages"
+                :key="msg.id"
+                @click="viewMessage(msg)"
+                class="p-4 flex items-start gap-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                :class="{ 'bg-muted/20': msg.isRead, 'font-semibold': !msg.isRead }"
+              >
+                <div class="flex items-center gap-4 flex-1">
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="w-2 h-2 rounded-full"
+                      :class="[msg.isRead ? 'bg-transparent' : 'bg-primary']"
+                    ></span>
+                    <Avatar class="hidden sm:block">
+                      <AvatarFallback>{{ msg.name.charAt(0).toUpperCase() }}</AvatarFallback>
+                    </Avatar>
+                  </div>
+                  <div class="flex-1 grid grid-cols-12 gap-2 items-center">
+                    <div class="col-span-12 sm:col-span-3">
+                      <p class="truncate" :class="{ 'text-foreground': !msg.isRead, 'text-muted-foreground': msg.isRead }">{{ msg.name }}</p>
+                    </div>
+                    <div class="col-span-12 sm:col-span-6">
+                      <p class="truncate" :class="{ 'text-foreground': !msg.isRead, 'text-muted-foreground': msg.isRead }">
                         {{ msg.subject }}
-                      </TableCell>
-                      <TableCell>{{ msg.date }}</TableCell>
-                      <TableCell class="text-right">
-                        <Button
-                          @click.stop="contactStore.toggleReadStatus(msg.id)"
-                          variant="ghost"
-                          size="icon"
-                          class="mr-2"
-                          :title="msg.isRead ? 'Mark as unread' : 'Mark as read'"
-                        >
-                          <MailOpen v-if="!msg.isRead" class="w-4 h-4" />
-                          <Mail v-else class="w-4 h-4" />
-                        </Button>
-                        <Button
-                          @click.stop="contactStore.deleteMessage(msg.id)"
-                          variant="ghost"
-                          size="icon"
-                          class="text-destructive hover:text-destructive"
-                          title="Delete message"
-                        >
-                          <Trash2 class="w-4 h-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  </template>
-                  <TableRow v-else>
-                    <TableCell colspan="5" class="h-24 text-center">
-                      No matching messages found.
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+                      </p>
+                    </div>
+                    <div class="col-span-12 sm:col-span-3 text-sm text-muted-foreground text-left sm:text-right">
+                      {{ msg.date }}
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 ml-auto">
+                  <Button
+                    @click.stop="contactStore.toggleReadStatus(msg.id)"
+                    variant="ghost"
+                    size="icon"
+                    :title="msg.isRead ? 'Mark as unread' : 'Mark as read'"
+                  >
+                    <MailOpen v-if="!msg.isRead" class="w-5 h-5" />
+                    <Mail v-else class="w-5 h-5 text-muted-foreground" />
+                  </Button>
+                  <Button
+                    @click.stop="contactStore.deleteMessage(msg.id)"
+                    variant="ghost"
+                    size="icon"
+                    class="text-destructive hover:text-destructive"
+                    title="Delete message"
+                  >
+                    <Trash2 class="w-5 h-5" />
+                  </Button>
+                </div>
+              </div>
+            </transition-group>
+            <div v-if="filteredMessages.length === 0" class="p-12 text-center">
+              <p class="text-muted-foreground">No matching messages found.</p>
             </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+          </div>
+        </div>
+      </Card>
     </div>
 
     <!-- Message Detail Dialog -->
     <Dialog v-model:open="isDetailViewOpen">
-      <DialogContent v-if="selectedMessage" class="sm:max-w-[625px]">
-        <DialogHeader>
-          <DialogTitle>{{ selectedMessage.subject }}</DialogTitle>
-          <DialogDescription>
-            From: {{ selectedMessage.name }} ({{ selectedMessage.email }}) on
-            {{ selectedMessage.date }}
-          </DialogDescription>
+      <DialogContent v-if="selectedMessage" class="sm:max-w-3xl p-0">
+        <DialogHeader class="p-6 pb-4">
+          <div class="flex items-start gap-4">
+            <Avatar>
+              <AvatarFallback>{{ selectedMessage.name.charAt(0).toUpperCase() }}</AvatarFallback>
+            </Avatar>
+            <div class="flex-1">
+              <DialogTitle class="text-2xl mb-1">{{ selectedMessage.subject }}</DialogTitle>
+              <DialogDescription>
+                From: <span class="font-medium text-foreground">{{ selectedMessage.name }}</span> ({{ selectedMessage.email }})
+                <br>
+                Received on: {{ selectedMessage.date }}
+              </DialogDescription>
+            </div>
+            <Button @click="isDetailViewOpen = false" variant="ghost" size="icon" class="ml-auto">
+              <X class="w-5 h-5" />
+            </Button>
+          </div>
         </DialogHeader>
-        <div class="py-4 whitespace-pre-wrap">{{ selectedMessage.message }}</div>
-        <DialogFooter>
-          <Button @click="isDetailViewOpen = false">Close</Button>
+        <Separator />
+        <div class="p-6 max-h-[60vh] overflow-y-auto text-base leading-relaxed whitespace-pre-wrap">
+          {{ selectedMessage.message }}
+        </div>
+        <Separator />
+        <DialogFooter class="p-4 bg-muted/50 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
+          <Button @click="isDetailViewOpen = false" variant="outline">Close</Button>
+          <Button @click="contactStore.toggleReadStatus(selectedMessage!.id)" variant="secondary">
+            <MailOpen v-if="selectedMessage.isRead" class="w-4 h-4 mr-2" />
+            <Mail v-else class="w-4 h-4 mr-2" />
+            {{ selectedMessage.isRead ? 'Mark as Unread' : 'Mark as Read' }}
+          </Button>
+          <Button @click="deleteMessageFromDetail(selectedMessage!.id)" variant="destructive">
+            <Trash2 class="w-4 h-4 mr-2" />
+            Delete
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   </div>
 </template>
+
+<style scoped>
+.message-list-enter-active,
+.message-list-leave-active {
+  transition: all 0.5s ease;
+}
+.message-list-enter-from,
+.message-list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>
