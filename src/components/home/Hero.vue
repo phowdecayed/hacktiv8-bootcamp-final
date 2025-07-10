@@ -3,9 +3,6 @@ import { Button } from '@/components/ui/button'
 import { motion } from 'motion-v'
 import { useRouter } from 'vue-router'
 import { ArrowRight, Sparkles } from 'lucide-vue-next'
-import { loadSlim } from 'tsparticles-slim'
-import type { Engine } from 'tsparticles-engine'
-import { options } from '@/lib/particles-config'
 
 defineOptions({
   name: 'HomeHero',
@@ -16,10 +13,6 @@ const router = useRouter()
 function goToChatbot() {
   router.push('/chatbot')
 }
-
-async function particlesInit(engine: Engine) {
-  await loadSlim(engine)
-}
 </script>
 
 <template>
@@ -27,8 +20,17 @@ async function particlesInit(engine: Engine) {
     class="relative overflow-hidden bg-background min-h-screen flex items-center justify-center p-4"
   >
     <div class="absolute inset-0 z-0">
-      <Particles id="tsparticles" class="w-full h-full" :options="options" @load="particlesInit" />
-      <div class="absolute inset-0 bg-black/10"></div>
+      <!-- Background Image with Ken Burns Effect -->
+      <div
+        class="absolute inset-0 bg-cover bg-center animate-ken-burns"
+        style="
+          background-image: url('https://121clicks.com/wp-content/uploads/2024/04/minimalism-photography-niko-lator-02.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+        "
+      ></div>
+      <!-- Overlay -->
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent"
+      ></div>
     </div>
 
     <motion.div
@@ -76,22 +78,27 @@ async function particlesInit(engine: Engine) {
         <Button
           size="lg"
           variant="secondary"
-          class="shadow-lg bg-background/50 w-full sm:w-auto"
+          class="shadow-lg w-full sm:w-auto"
           @click="goToChatbot"
-          :while-hover="{ scale: 1.05 }"
-          :while-tap="{ scale: 0.95 }"
         >
-          <motion.a
-            href="#chatbot"
-            :while-hover="{ scale: 1.05 }"
-            :while-tap="{ scale: 0.95 }"
-            class="flex items-center"
-          >
-            <Sparkles class="mr-2 h-5 w-5 text-yellow-400" />
-            <span>Chat dengan AI</span>
-          </motion.a>
+          <Sparkles class="mr-2 h-5 w-5 text-yellow-400" />
+          Chat dengan AI
         </Button>
       </motion.div>
     </motion.div>
   </section>
 </template>
+
+<style>
+@keyframes ken-burns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.1) translate(-2%, 2%);
+  }
+}
+.animate-ken-burns {
+  animation: ken-burns 20s ease-in-out infinite alternate;
+}
+</style>
