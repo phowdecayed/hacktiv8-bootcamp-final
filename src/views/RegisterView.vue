@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { Button } from '@/components/ui/button'
@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { motion } from 'motion-v'
 import { toast } from 'vue-sonner'
 import { RouterLink } from 'vue-router'
+import AuthFormSkeleton from '@/components/ui/skeleton/AuthFormSkeleton.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -16,12 +17,13 @@ const router = useRouter()
 const username = ref('')
 const password = ref('')
 const email = ref('')
-const isLoading = ref(false)
+const isRegistering = ref(false)
+const isLoading = ref(true)
 
 const handleRegister = async () => {
-  isLoading.value = true
+  isRegistering.value = true
   const result = await auth.register(username.value, password.value)
-  isLoading.value = false
+  isRegistering.value = false
 
   if (result.success) {
     toast.success('Registration Successful!', {
@@ -36,10 +38,17 @@ const handleRegister = async () => {
     })
   }
 }
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1000)
+})
 </script>
 
 <template>
-  <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-muted/20">
+  <AuthFormSkeleton v-if="isLoading" :is-register="true" />
+  <div v-else class="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-muted/20">
     <div class="w-full max-w-4xl mx-auto p-4">
       <div class="grid md:grid-cols-2 rounded-lg overflow-hidden shadow-2xl bg-background">
         <!-- Form Section -->
@@ -68,8 +77,8 @@ const handleRegister = async () => {
                   <Label for="password">Password</Label>
                   <Input id="password" v-model="password" type="password" required placeholder="Create a password" />
                 </div>
-                <Button type="submit" class="w-full !mt-6" :disabled="isLoading">
-                  <span v-if="isLoading">Registering...</span>
+                <Button type="submit" class="w-full !mt-6" :disabled="isRegistering">
+                  <span v-if="isRegistering">Registering...</span>
                   <span v-else>Register</span>
                 </Button>
               </form>

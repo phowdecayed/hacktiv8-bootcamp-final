@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Mail, Phone, MapPin, Share2 } from 'lucide-vue-next'
 import {
   Card,
@@ -13,11 +13,13 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { motion } from 'motion-v'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const name = ref('')
 const email = ref('')
 const message = ref('')
 const submitted = ref(false)
+const isMapLoading = ref(true)
 
 const submitForm = () => {
   // Simulate form submission
@@ -32,6 +34,13 @@ const submitForm = () => {
     }, 3000)
   }, 500)
 }
+
+onMounted(() => {
+  // Simulate map loading time
+  setTimeout(() => {
+    isMapLoading.value = false
+  }, 1500)
+})
 </script>
 
 <template>
@@ -173,10 +182,20 @@ const submitForm = () => {
         </motion.div>
       </div>
 
+      <!-- Map Section -->
+      <Card v-if="isMapLoading" class="mt-16">
+        <CardHeader>
+          <CardTitle class="text-2xl">Lokasi Kami</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Skeleton class="aspect-video w-full rounded-lg" />
+        </CardContent>
+      </Card>
       <motion.div
+        v-else
         :initial="{ opacity: 0, y: 30 }"
         :animate="{ opacity: 1, y: 0 }"
-        :transition="{ duration: 0.5, delay: 0.6 }"
+        :transition="{ duration: 0.5, delay: 0.2 }"
         class="mt-16"
       >
         <Card>

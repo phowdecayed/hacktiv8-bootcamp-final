@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -8,10 +8,12 @@ import { Label } from '@/components/ui/label'
 import { motion } from 'motion-v'
 import { RouterLink } from 'vue-router'
 import { toast } from 'vue-sonner'
+import AuthFormSkeleton from '@/components/ui/skeleton/AuthFormSkeleton.vue'
 
 const auth = useAuthStore()
 const username = ref('')
 const password = ref('')
+const isLoading = ref(true)
 
 const handleLogin = async () => {
   const success = await auth.login(username.value, password.value)
@@ -21,10 +23,17 @@ const handleLogin = async () => {
     })
   }
 }
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false
+  }, 1000)
+})
 </script>
 
 <template>
-  <div class="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-muted/20">
+  <AuthFormSkeleton v-if="isLoading" />
+  <div v-else class="min-h-[calc(100vh-4rem)] flex items-center justify-center bg-muted/20">
     <div class="w-full max-w-4xl mx-auto p-4">
       <div class="grid md:grid-cols-2 rounded-lg overflow-hidden shadow-2xl bg-background">
         <!-- Form Section -->

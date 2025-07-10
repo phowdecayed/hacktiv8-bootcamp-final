@@ -1,4 +1,4 @@
-import type { ISourceOptions } from 'vue3-particles'
+import type { ISourceOptions } from '@tsparticles/engine'
 
 export const options: ISourceOptions = {
   background: {
@@ -13,7 +13,9 @@ export const options: ISourceOptions = {
         enable: true,
         mode: 'grab',
       },
-      resize: true,
+      resize: {
+        enable: true,
+      },
     },
     modes: {
       grab: {
