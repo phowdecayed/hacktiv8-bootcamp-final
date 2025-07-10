@@ -4,6 +4,7 @@ import { ref, computed, watch } from 'vue'
 import { motion } from 'motion-v'
 import { Button } from '@/components/ui/button'
 import { RouterLink } from 'vue-router'
+import { Scaling, ShieldCheck, Zap, Smartphone, MousePointerClick, Bell } from 'lucide-vue-next'
 
 const route = useRoute()
 const productId = ref(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id)
@@ -17,12 +18,9 @@ const servicesData: { [key: string]: any } = {
       'We specialize in creating robust, high-performance web applications. Our team leverages the latest frameworks and technologies to build solutions that are not only scalable and secure but also provide a seamless user experience. From complex enterprise platforms to dynamic single-page applications, we deliver excellence.',
     imageUrl: 'https://picsum.photos/seed/web-detail/1200/800',
     features: [
-      { title: 'Scalable Architecture', icon: 'M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25' },
-      { title: 'Secure by Design', icon: 'M9 12.75L11.25 15 15 9.75' },
-      {
-        title: 'Optimized Performance',
-        icon: 'M3.75 13.5l10.5-11.25L12 3m-8.25 9.75L12 21l8.25-8.25',
-      },
+      { title: 'Scalable Architecture', icon: Scaling },
+      { title: 'Secure by Design', icon: ShieldCheck },
+      { title: 'Optimized Performance', icon: Zap },
     ],
     gallery: [
       'https://picsum.photos/seed/web-gallery1/600/400',
@@ -37,12 +35,9 @@ const servicesData: { [key: string]: any } = {
       'We design and develop cross-platform mobile applications for both iOS and Android. Our focus is on creating apps with a flawless user experience, engaging design, and powerful functionality that meets the demands of modern users.',
     imageUrl: 'https://picsum.photos/seed/mobile-detail/1200/800',
     features: [
-      { title: 'iOS & Android', icon: 'M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25' },
-      { title: 'Intuitive UI/UX', icon: 'M9 12.75L11.25 15 15 9.75' },
-      {
-        title: 'Push Notifications',
-        icon: 'M3.75 13.5l10.5-11.25L12 3m-8.25 9.75L12 21l8.25-8.25',
-      },
+      { title: 'iOS & Android', icon: Smartphone },
+      { title: 'Intuitive UI/UX', icon: MousePointerClick },
+      { title: 'Push Notifications', icon: Bell },
     ],
     gallery: [
       'https://picsum.photos/seed/mobile-gallery1/600/400',
@@ -130,20 +125,7 @@ watch(
                 :key="feature.title"
                 class="flex items-center gap-4"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  class="w-6 h-6 text-primary"
-                >
-                  <path :d="feature.icon" />
-                </svg>
+                <component :is="feature.icon" class="w-6 h-6 text-primary" />
                 <span>{{ feature.title }}</span>
               </li>
             </ul>
