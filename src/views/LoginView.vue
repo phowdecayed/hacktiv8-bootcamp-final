@@ -59,7 +59,7 @@ onMounted(() => {
               <form @submit.prevent="handleLogin" class="space-y-4">
                 <div class="space-y-2">
                   <Label for="username">Username</Label>
-                  <Input id="username" v-model="username" required placeholder="admin" />
+                  <Input id="username" v-model="username" required placeholder="username" />
                 </div>
                 <div class="space-y-2">
                   <Label for="password">Password</Label>
@@ -68,7 +68,7 @@ onMounted(() => {
                     v-model="password"
                     type="password"
                     required
-                    placeholder="admin"
+                    placeholder="password"
                   />
                 </div>
                 <Button @click="handleLogin" class="w-full !mt-6">Login</Button>
