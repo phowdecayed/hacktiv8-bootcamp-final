@@ -82,7 +82,6 @@ function goToChatbot() {
           @click="goToChatbot"
         >
           <motion.a
-            href="#chatbot"
             :while-hover="{ scale: 1.05 }"
             :while-tap="{ scale: 0.95 }"
             class="inline-flex items-center"
