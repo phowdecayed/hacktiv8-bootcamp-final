@@ -142,6 +142,25 @@ onUnmounted(() => {
           </div>
 
           <div class="border rounded-lg">
+            <!-- Inbox Table Header -->
+            <div class="p-4 hidden sm:flex border-b bg-muted/50 text-sm font-medium text-muted-foreground items-center gap-4">
+              <div class="flex items-center gap-4 flex-1">
+                <div class="flex items-center gap-2 invisible">
+                  <span class="w-2 h-2 rounded-full"></span>
+                  <Avatar class="hidden sm:block"><AvatarFallback>X</AvatarFallback></Avatar>
+                </div>
+                <div class="flex-1 grid grid-cols-12 gap-2 items-center">
+                  <div class="col-span-12 sm:col-span-3">Sender</div>
+                  <div class="col-span-12 sm:col-span-6">Subject</div>
+                  <div class="col-span-12 sm:col-span-3 text-left sm:text-right">Date</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 ml-auto invisible">
+                  <Button variant="ghost" size="icon"><MailOpen class="w-5 h-5" /></Button>
+                  <Button variant="ghost" size="icon"><Trash2 class="w-5 h-5" /></Button>
+              </div>
+            </div>
+
             <transition-group
               tag="div"
               name="message-list"
