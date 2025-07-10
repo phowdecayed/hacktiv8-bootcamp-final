@@ -215,10 +215,7 @@ const avatarButtonClass = computed(() => {
                 </Button>
                 <Button
                   variant="destructive"
-                  @click="
-                    auth.logout()
-                    isMobileMenuOpen = false
-                  "
+                  @click="(auth.logout(), (isMobileMenuOpen = false))"
                   class="w-full"
                 >
                   <LogOut class="mr-2 h-5 w-5" />
