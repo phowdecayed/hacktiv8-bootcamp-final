@@ -4,8 +4,8 @@ import { useRouter } from 'vue-router'
 
 // Define an interface for the user object
 interface User {
-  username: string;
-  password: string; // This will be the hashed password
+  username: string
+  password: string // This will be the hashed password
 }
 
 // Helper function to hash passwords using the SubtleCrypto API
@@ -14,7 +14,7 @@ async function hashPassword(password: string): Promise<string> {
   const data = encoder.encode(password)
   const hashBuffer = await window.crypto.subtle.digest('SHA-256', data)
   const hashArray = Array.from(new Uint8Array(hashBuffer))
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
   return hashHex
 }
 
@@ -24,7 +24,10 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isLoggedIn = computed(() => !!user.value)
 
-  async function register(username: string, password: string): Promise<{ success: boolean; message: string }> {
+  async function register(
+    username: string,
+    password: string,
+  ): Promise<{ success: boolean; message: string }> {
     if (!username || !password) {
       return { success: false, message: 'Username and password are required.' }
     }
@@ -46,14 +49,16 @@ export const useAuthStore = defineStore('auth', () => {
     const hashedPassword = await hashPassword(password)
 
     // Add default admin user if not present
-    const adminUserExists = users.some((u: User) => u.username === 'admin');
+    const adminUserExists = users.some((u: User) => u.username === 'admin')
     if (!adminUserExists) {
-        const adminHashedPassword = await hashPassword('admin');
-        users.push({ username: 'admin', password: adminHashedPassword });
-        localStorage.setItem('users', JSON.stringify(users));
+      const adminHashedPassword = await hashPassword('admin')
+      users.push({ username: 'admin', password: adminHashedPassword })
+      localStorage.setItem('users', JSON.stringify(users))
     }
 
-    const foundUser = users.find((u: User) => u.username === username && u.password === hashedPassword)
+    const foundUser = users.find(
+      (u: User) => u.username === username && u.password === hashedPassword,
+    )
 
     if (foundUser) {
       user.value = foundUser.username

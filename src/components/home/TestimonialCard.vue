@@ -20,7 +20,9 @@ const getInitials = (name: string) => {
 </script>
 
 <template>
-  <Card class="h-full bg-background/60 backdrop-blur-sm border-border/50 hover:bg-primary/5 transition-colors duration-300">
+  <Card
+    class="h-full bg-background/60 backdrop-blur-sm border-border/50 hover:bg-primary/5 transition-colors duration-300"
+  >
     <CardContent class="p-6 flex flex-col h-full">
       <Quote class="w-8 h-8 text-primary mb-4" />
       <blockquote class="flex-grow">

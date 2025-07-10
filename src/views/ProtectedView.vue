@@ -12,9 +12,7 @@ import Calculator from '@/components/ui/calculator/Calculator.vue'
       :animate="{ opacity: 1, y: 0 }"
       :transition="{ duration: 0.8 }"
     >
-      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-        Protected Page
-      </h1>
+      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">Protected Page</h1>
       <p class="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
         Welcome! This is a protected area.
       </p>
@@ -28,7 +26,9 @@ import Calculator from '@/components/ui/calculator/Calculator.vue'
           :transition="{ type: 'spring', stiffness: 100, damping: 20, duration: 0.8 }"
           class="mb-12"
         >
-          <h2 class="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+          <h2
+            class="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl"
+          >
             CONGRATULATIONS
           </h2>
         </motion.div>

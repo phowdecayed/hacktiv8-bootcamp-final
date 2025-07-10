@@ -9,12 +9,39 @@ defineOptions({
 })
 
 const features = [
-  { title: 'Modern Vue 3', description: 'Utilizing the latest features of Vue 3, including the Composition API for more modular and organized code.', icon: Code },
-  { title: 'TypeScript', description: 'More reliable development with static typing and better tooling to prevent runtime errors.', icon: Shield },
-  { title: 'Tailwind CSS', description: 'A utility-first CSS framework for rapid and responsive design with minimal custom CSS.', icon: Layers },
-  { title: 'SPA Routing', description: 'Fast page navigation without browser refreshes using Vue Router.', icon: Zap },
-  { title: 'State Management', description: 'Efficient and structured application state management with Pinia.', icon: Cloud },
-  { title: 'Responsive Design', description: 'Optimal display across various screen sizes, from mobile to desktop.', icon: Smartphone },
+  {
+    title: 'Modern Vue 3',
+    description:
+      'Utilizing the latest features of Vue 3, including the Composition API for more modular and organized code.',
+    icon: Code,
+  },
+  {
+    title: 'TypeScript',
+    description:
+      'More reliable development with static typing and better tooling to prevent runtime errors.',
+    icon: Shield,
+  },
+  {
+    title: 'Tailwind CSS',
+    description:
+      'A utility-first CSS framework for rapid and responsive design with minimal custom CSS.',
+    icon: Layers,
+  },
+  {
+    title: 'SPA Routing',
+    description: 'Fast page navigation without browser refreshes using Vue Router.',
+    icon: Zap,
+  },
+  {
+    title: 'State Management',
+    description: 'Efficient and structured application state management with Pinia.',
+    icon: Cloud,
+  },
+  {
+    title: 'Responsive Design',
+    description: 'Optimal display across various screen sizes, from mobile to desktop.',
+    icon: Smartphone,
+  },
 ]
 
 const activeFeatureIndex = ref(0)
@@ -50,15 +77,31 @@ const activeFeatureIndex = ref(0)
             :while-in-view="{ opacity: 1, y: 0 }"
             :transition="{ duration: 0.5, delay: 0.1 * index }"
           >
-            <Card :class="['transition-all duration-300', activeFeatureIndex === index ? 'bg-primary/5 shadow-lg' : 'bg-muted/20']">
+            <Card
+              :class="[
+                'transition-all duration-300',
+                activeFeatureIndex === index ? 'bg-primary/5 shadow-lg' : 'bg-muted/20',
+              ]"
+            >
               <CardHeader>
                 <div class="flex items-center gap-4">
-                  <component :is="feature.icon" :class="['w-8 h-8 transition-colors', activeFeatureIndex === index ? 'text-primary' : 'text-muted-foreground']" />
+                  <component
+                    :is="feature.icon"
+                    :class="[
+                      'w-8 h-8 transition-colors',
+                      activeFeatureIndex === index ? 'text-primary' : 'text-muted-foreground',
+                    ]"
+                  />
                   <CardTitle>{{ feature.title }}</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
-                <p :class="['transition-colors', activeFeatureIndex === index ? 'text-foreground' : 'text-muted-foreground']">
+                <p
+                  :class="[
+                    'transition-colors',
+                    activeFeatureIndex === index ? 'text-foreground' : 'text-muted-foreground',
+                  ]"
+                >
                   {{ feature.description }}
                 </p>
               </CardContent>

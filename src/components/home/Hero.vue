@@ -27,12 +27,7 @@ async function particlesInit(engine: Engine) {
     class="relative overflow-hidden bg-background min-h-screen flex items-center justify-center p-4"
   >
     <div class="absolute inset-0 z-0">
-      <Particles
-        id="tsparticles"
-        class="w-full h-full"
-        :options="options"
-        @load="particlesInit"
-      />
+      <Particles id="tsparticles" class="w-full h-full" :options="options" @load="particlesInit" />
       <div class="absolute inset-0 bg-black/10"></div>
     </div>
 

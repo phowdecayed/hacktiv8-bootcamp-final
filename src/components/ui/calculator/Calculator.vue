@@ -8,7 +8,10 @@ const currentInput = ref('0')
 const hasCalculated = ref(false)
 
 const displayValue = computed(() => {
-  return expression.value + (currentInput.value !== '0' || expression.value === '' ? currentInput.value : '')
+  return (
+    expression.value +
+    (currentInput.value !== '0' || expression.value === '' ? currentInput.value : '')
+  )
 })
 
 const handleNumberClick = (num: string) => {
@@ -91,7 +94,7 @@ const handleClearClick = () => {
           <Button @click="handleNumberClick('0')" class="col-span-2">0</Button>
           <Button @click="handleDecimalClick">.</Button>
         </div>
-        
+
         <Button @click="handleEqualsClick" class="row-span-2 h-full">=</Button>
       </div>
     </CardContent>

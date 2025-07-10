@@ -13,12 +13,16 @@ const servicesData: { [key: string]: any } = {
   'web-development': {
     title: 'Web Application Development',
     tagline: 'Building the Future of the Web',
-    description: 'We specialize in creating robust, high-performance web applications. Our team leverages the latest frameworks and technologies to build solutions that are not only scalable and secure but also provide a seamless user experience. From complex enterprise platforms to dynamic single-page applications, we deliver excellence.',
+    description:
+      'We specialize in creating robust, high-performance web applications. Our team leverages the latest frameworks and technologies to build solutions that are not only scalable and secure but also provide a seamless user experience. From complex enterprise platforms to dynamic single-page applications, we deliver excellence.',
     imageUrl: 'https://picsum.photos/seed/web-detail/1200/800',
     features: [
       { title: 'Scalable Architecture', icon: 'M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25' },
       { title: 'Secure by Design', icon: 'M9 12.75L11.25 15 15 9.75' },
-      { title: 'Optimized Performance', icon: 'M3.75 13.5l10.5-11.25L12 3m-8.25 9.75L12 21l8.25-8.25' },
+      {
+        title: 'Optimized Performance',
+        icon: 'M3.75 13.5l10.5-11.25L12 3m-8.25 9.75L12 21l8.25-8.25',
+      },
     ],
     gallery: [
       'https://picsum.photos/seed/web-gallery1/600/400',
@@ -29,12 +33,16 @@ const servicesData: { [key: string]: any } = {
   'mobile-development': {
     title: 'Mobile App Development',
     tagline: 'Apps That Delight and Deliver',
-    description: 'We design and develop cross-platform mobile applications for both iOS and Android. Our focus is on creating apps with a flawless user experience, engaging design, and powerful functionality that meets the demands of modern users.',
+    description:
+      'We design and develop cross-platform mobile applications for both iOS and Android. Our focus is on creating apps with a flawless user experience, engaging design, and powerful functionality that meets the demands of modern users.',
     imageUrl: 'https://picsum.photos/seed/mobile-detail/1200/800',
     features: [
       { title: 'iOS & Android', icon: 'M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25' },
       { title: 'Intuitive UI/UX', icon: 'M9 12.75L11.25 15 15 9.75' },
-      { title: 'Push Notifications', icon: 'M3.75 13.5l10.5-11.25L12 3m-8.25 9.75L12 21l8.25-8.25' },
+      {
+        title: 'Push Notifications',
+        icon: 'M3.75 13.5l10.5-11.25L12 3m-8.25 9.75L12 21l8.25-8.25',
+      },
     ],
     gallery: [
       'https://picsum.photos/seed/mobile-gallery1/600/400',
@@ -45,27 +53,38 @@ const servicesData: { [key: string]: any } = {
   // Add other services here...
 }
 
-const product = computed(() => servicesData[productId.value] || {
-  title: 'Service Not Found',
-  description: 'The requested service could not be found.',
-  imageUrl: 'https://picsum.photos/seed/not-found/1200/800',
-  features: [],
-  gallery: [],
-})
+const product = computed(
+  () =>
+    servicesData[productId.value] || {
+      title: 'Service Not Found',
+      description: 'The requested service could not be found.',
+      imageUrl: 'https://picsum.photos/seed/not-found/1200/800',
+      features: [],
+      gallery: [],
+    },
+)
 
-watch(() => route.params.id, (newId) => {
-  productId.value = Array.isArray(newId) ? newId[0] : newId
-  window.scrollTo(0, 0)
-})
-
+watch(
+  () => route.params.id,
+  (newId) => {
+    productId.value = Array.isArray(newId) ? newId[0] : newId
+    window.scrollTo(0, 0)
+  },
+)
 </script>
 
 <template>
   <div class="bg-background text-foreground">
     <!-- Hero Section -->
-    <div class="relative h-[60vh] flex items-center justify-center text-center text-white overflow-hidden">
+    <div
+      class="relative h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
+    >
       <div class="absolute inset-0 bg-black/50 z-10"></div>
-      <img :src="product.imageUrl" :alt="product.title" class="absolute inset-0 w-full h-full object-cover">
+      <img
+        :src="product.imageUrl"
+        :alt="product.title"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
       <motion.div
         class="relative z-20"
         :initial="{ opacity: 0, y: 20 }"
@@ -106,8 +125,23 @@ watch(() => route.params.id, (newId) => {
           <div class="bg-muted/20 p-8 rounded-lg">
             <h3 class="text-2xl font-bold mb-6">Key Features</h3>
             <ul class="space-y-4">
-              <li v-for="feature in product.features" :key="feature.title" class="flex items-center gap-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
+              <li
+                v-for="feature in product.features"
+                :key="feature.title"
+                class="flex items-center gap-4"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="w-6 h-6 text-primary"
+                >
                   <path :d="feature.icon" />
                 </svg>
                 <span>{{ feature.title }}</span>
@@ -130,7 +164,11 @@ watch(() => route.params.id, (newId) => {
             :while-in-view="{ opacity: 1, scale: 1 }"
             :transition="{ duration: 0.5, delay: index * 0.1 }"
           >
-            <img :src="image" alt="Gallery image" class="rounded-lg shadow-xl w-full h-full object-cover">
+            <img
+              :src="image"
+              alt="Gallery image"
+              class="rounded-lg shadow-xl w-full h-full object-cover"
+            />
           </motion.div>
         </div>
       </div>

@@ -9,25 +9,29 @@ const services = [
   {
     id: 'web-development',
     title: 'Web Application Development',
-    description: 'We build modern, scalable, and secure web applications tailored to your business needs using the latest technologies.',
+    description:
+      'We build modern, scalable, and secure web applications tailored to your business needs using the latest technologies.',
     imageUrl: 'https://picsum.photos/seed/web-dev/800/600',
   },
   {
     id: 'mobile-development',
     title: 'Mobile App Development',
-    description: 'Cross-platform mobile apps for iOS and Android that deliver a seamless user experience and robust performance.',
+    description:
+      'Cross-platform mobile apps for iOS and Android that deliver a seamless user experience and robust performance.',
     imageUrl: 'https://picsum.photos/seed/mobile-dev/800/600',
   },
   {
     id: 'ui-ux-design',
     title: 'UI/UX Design',
-    description: 'Intuitive and beautiful user interfaces that enhance user engagement and drive conversions.',
+    description:
+      'Intuitive and beautiful user interfaces that enhance user engagement and drive conversions.',
     imageUrl: 'https://picsum.photos/seed/ui-ux/800/600',
   },
   {
     id: 'cloud-solutions',
     title: 'Cloud Solutions',
-    description: 'Scalable and secure cloud infrastructure to power your applications and services.',
+    description:
+      'Scalable and secure cloud infrastructure to power your applications and services.',
     imageUrl: 'https://picsum.photos/seed/cloud/800/600',
   },
 ]
@@ -51,9 +55,7 @@ onMounted(() => {
       :animate="{ opacity: 1, y: 0 }"
       :transition="{ duration: 0.8 }"
     >
-      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-        Our Services
-      </h1>
+      <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">Our Services</h1>
       <p class="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
         Innovative solutions to bring your ideas to life.
       </p>
@@ -74,7 +76,11 @@ onMounted(() => {
           :transition="{ duration: 0.6, delay: 0.1 * index }"
         >
           <div :class="index % 2 === 0 ? 'md:order-last' : ''">
-            <img :src="service.imageUrl" :alt="service.title" class="rounded-lg shadow-xl w-full h-auto">
+            <img
+              :src="service.imageUrl"
+              :alt="service.title"
+              class="rounded-lg shadow-xl w-full h-auto"
+            />
           </div>
           <div>
             <h2 class="text-3xl font-bold mb-4">{{ service.title }}</h2>

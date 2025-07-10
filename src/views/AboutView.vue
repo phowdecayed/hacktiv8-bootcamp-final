@@ -65,7 +65,8 @@ const timeline = [
         >
           <h2 class="text-3xl font-bold mb-4">Our Mission</h2>
           <p class="text-muted-foreground text-lg">
-            To empower businesses with accessible and powerful technology, helping them achieve their full potential.
+            To empower businesses with accessible and powerful technology, helping them achieve
+            their full potential.
           </p>
         </motion.div>
         <motion.div
@@ -75,7 +76,8 @@ const timeline = [
         >
           <h2 class="text-3xl font-bold mb-4">Our Vision</h2>
           <p class="text-muted-foreground text-lg">
-            To be a leader in technological innovation, creating products that are not only functional but also inspiring.
+            To be a leader in technological innovation, creating products that are not only
+            functional but also inspiring.
           </p>
         </motion.div>
       </div>
@@ -84,7 +86,11 @@ const timeline = [
     <!-- Timeline Section -->
     <div class="py-24 bg-muted/20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div class="text-center mb-16" :initial="{ opacity: 0, y: 20 }" :while-in-view="{ opacity: 1, y: 0 }">
+        <motion.div
+          class="text-center mb-16"
+          :initial="{ opacity: 0, y: 20 }"
+          :while-in-view="{ opacity: 1, y: 0 }"
+        >
           <h2 class="text-3xl font-bold">Our Journey</h2>
           <p class="text-muted-foreground mt-2">A brief history of our company's milestones.</p>
         </motion.div>
@@ -113,7 +119,9 @@ const timeline = [
               </div>
             </motion.div>
             <!-- Timeline dot -->
-            <div class="absolute left-1/2 top-1/2 w-4 h-4 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+            <div
+              class="absolute left-1/2 top-1/2 w-4 h-4 bg-primary rounded-full -translate-x-1/2 -translate-y-1/2"
+            ></div>
           </div>
         </div>
       </div>
@@ -121,7 +129,11 @@ const timeline = [
 
     <!-- Team Section -->
     <div class="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <motion.div class="text-center mb-16" :initial="{ opacity: 0, y: 20 }" :while-in-view="{ opacity: 1, y: 0 }">
+      <motion.div
+        class="text-center mb-16"
+        :initial="{ opacity: 0, y: 20 }"
+        :while-in-view="{ opacity: 1, y: 0 }"
+      >
         <h2 class="text-3xl font-bold">Meet Our Team</h2>
         <p class="text-muted-foreground mt-2">The talented people behind our success.</p>
       </motion.div>
@@ -138,10 +150,14 @@ const timeline = [
             :while-in-view="{ opacity: 1, y: 0, scale: 1 }"
             :transition="{ duration: 0.5, delay: 0.1 * index }"
           >
-            <Card class="h-full text-center transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2 bg-muted/20 border-transparent">
+            <Card
+              class="h-full text-center transition-all duration-300 group-hover:shadow-2xl group-hover:-translate-y-2 bg-muted/20 border-transparent"
+            >
               <CardContent class="pt-8">
                 <div class="relative inline-block">
-                  <Avatar class="w-28 h-28 mx-auto mb-4 border-4 border-background group-hover:border-primary transition-colors duration-300">
+                  <Avatar
+                    class="w-28 h-28 mx-auto mb-4 border-4 border-background group-hover:border-primary transition-colors duration-300"
+                  >
                     <AvatarImage :src="member.avatar" :alt="member.name" />
                     <AvatarFallback>{{ member.name.charAt(0) }}</AvatarFallback>
                   </Avatar>
@@ -149,10 +165,16 @@ const timeline = [
                 <h3 class="text-xl font-bold">{{ member.name }}</h3>
                 <Badge variant="secondary" class="mt-1">{{ member.role }}</Badge>
                 <div class="mt-5 flex justify-center gap-4">
-                  <a :href="member.social.twitter" class="text-muted-foreground hover:text-primary transition-colors duration-300">
+                  <a
+                    :href="member.social.twitter"
+                    class="text-muted-foreground hover:text-primary transition-colors duration-300"
+                  >
                     <Twitter class="h-5 w-5" />
                   </a>
-                  <a :href="member.social.linkedin" class="text-muted-foreground hover:text-primary transition-colors duration-300">
+                  <a
+                    :href="member.social.linkedin"
+                    class="text-muted-foreground hover:text-primary transition-colors duration-300"
+                  >
                     <Linkedin class="h-5 w-5" />
                   </a>
                 </div>

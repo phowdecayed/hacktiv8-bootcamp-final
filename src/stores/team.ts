@@ -49,7 +49,13 @@ export const useTeamStore = defineStore('team', () => {
       role: 'Project Manager',
       avatar: 'https://i.pravatar.cc/150?img=13',
       bio: 'Budi is the organizational backbone of our team. He ensures that projects are delivered on time and within budget, while fostering a collaborative and productive environment.',
-      skills: ['Agile Methodologies', 'Scrum', 'Risk Management', 'Stakeholder Communication', 'Jira'],
+      skills: [
+        'Agile Methodologies',
+        'Scrum',
+        'Risk Management',
+        'Stakeholder Communication',
+        'Jira',
+      ],
       social: {
         twitter: '#',
         linkedin: '#',
@@ -59,7 +65,7 @@ export const useTeamStore = defineStore('team', () => {
   ])
 
   const getMemberByName = (name: string) => {
-    return members.value.find(m => m.name.toLowerCase().replace(/\s+/g, '-') === name)
+    return members.value.find((m) => m.name.toLowerCase().replace(/\s+/g, '-') === name)
   }
 
   return { members, getMemberByName }

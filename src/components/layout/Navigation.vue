@@ -84,16 +84,30 @@ const avatarButtonClass = computed(() => {
       </Button>
       <template v-if="!auth.isLoggedIn">
         <Button variant="ghost" asChild>
-          <RouterLink to="/login" class="font-medium transition-all duration-300" :class="authButtonClass">Login</RouterLink>
+          <RouterLink
+            to="/login"
+            class="font-medium transition-all duration-300"
+            :class="authButtonClass"
+            >Login</RouterLink
+          >
         </Button>
         <Button asChild>
-          <RouterLink to="/register" class="font-medium transition-all duration-300" :class="authButtonClass">Register</RouterLink>
+          <RouterLink
+            to="/register"
+            class="font-medium transition-all duration-300"
+            :class="authButtonClass"
+            >Register</RouterLink
+          >
         </Button>
       </template>
       <template v-else>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="ghost" class="relative rounded-full transition-all duration-300" :class="avatarButtonClass">
+            <Button
+              variant="ghost"
+              class="relative rounded-full transition-all duration-300"
+              :class="avatarButtonClass"
+            >
               <Avatar :class="avatarButtonClass">
                 <AvatarImage src="https://i.pravatar.cc/150" alt="User Avatar" />
                 <AvatarFallback>{{ auth.user?.charAt(0).toUpperCase() }}</AvatarFallback>
@@ -190,12 +204,23 @@ const avatarButtonClass = computed(() => {
                   </div>
                 </div>
                 <Button variant="ghost" asChild class="w-full justify-start">
-                  <RouterLink to="/protected" @click="isMobileMenuOpen = false" class="flex items-center">
+                  <RouterLink
+                    to="/protected"
+                    @click="isMobileMenuOpen = false"
+                    class="flex items-center"
+                  >
                     <Shield class="mr-2 h-5 w-5" />
                     <span>Protected Page</span>
                   </RouterLink>
                 </Button>
-                <Button variant="destructive" @click="auth.logout(); isMobileMenuOpen = false" class="w-full">
+                <Button
+                  variant="destructive"
+                  @click="
+                    auth.logout()
+                    isMobileMenuOpen = false
+                  "
+                  class="w-full"
+                >
                   <LogOut class="mr-2 h-5 w-5" />
                   <span>Log out</span>
                 </Button>

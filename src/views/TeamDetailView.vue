@@ -50,7 +50,12 @@ const member = computed(() => {
         <div class="mb-12">
           <h2 class="text-2xl font-bold mb-4">Skills</h2>
           <div class="flex flex-wrap gap-2">
-            <Badge v-for="skill in member.skills" :key="skill" variant="secondary" class="text-base px-3 py-1">
+            <Badge
+              v-for="skill in member.skills"
+              :key="skill"
+              variant="secondary"
+              class="text-base px-3 py-1"
+            >
               {{ skill }}
             </Badge>
           </div>

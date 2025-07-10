@@ -26,28 +26,39 @@ import { motion } from 'motion-v'
       >
         <h2>1. Agreement to Terms</h2>
         <p>
-          By using our services, you agree to be bound by these Terms of Service. If you do not agree to these terms, you may not use our services. We may modify the terms at any time, and such modifications will be effective immediately upon posting.
+          By using our services, you agree to be bound by these Terms of Service. If you do not
+          agree to these terms, you may not use our services. We may modify the terms at any time,
+          and such modifications will be effective immediately upon posting.
         </p>
 
         <h2>2. User Accounts</h2>
         <p>
-          To use certain features of our services, you may be required to create an account. You are responsible for safeguarding your account information and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.
+          To use certain features of our services, you may be required to create an account. You are
+          responsible for safeguarding your account information and for all activities that occur
+          under your account. You agree to notify us immediately of any unauthorized use of your
+          account.
         </p>
 
         <h2>3. Prohibited Activities</h2>
-        <p>
-          You agree not to engage in any of the following prohibited activities:
-        </p>
+        <p>You agree not to engage in any of the following prohibited activities:</p>
         <ul>
           <li>Copying, distributing, or disclosing any part of the service in any medium.</li>
-          <li>Using any automated system, including "robots," "spiders," "offline readers," etc., to access the service.</li>
+          <li>
+            Using any automated system, including "robots," "spiders," "offline readers," etc., to
+            access the service.
+          </li>
           <li>Transmitting spam, chain letters, or other unsolicited email.</li>
-          <li>Attempting to interfere with, compromise the system integrity or security, or decipher any transmissions to or from the servers running the service.</li>
+          <li>
+            Attempting to interfere with, compromise the system integrity or security, or decipher
+            any transmissions to or from the servers running the service.
+          </li>
         </ul>
 
         <h2>4. Termination</h2>
         <p>
-          We may terminate or suspend your account and bar access to the service immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever and without limitation, including but not limited to a breach of the Terms.
+          We may terminate or suspend your account and bar access to the service immediately,
+          without prior notice or liability, under our sole discretion, for any reason whatsoever
+          and without limitation, including but not limited to a breach of the Terms.
         </p>
       </motion.div>
     </div>

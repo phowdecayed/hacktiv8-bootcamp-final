@@ -16,7 +16,11 @@ const hasScrolled = computed(() => y.value > 20)
 <template>
   <header
     class="sticky top-0 z-50 w-full border-b transition-colors duration-300"
-    :class="hasScrolled ? 'bg-background/80 backdrop-blur-sm border-border' : 'bg-transparent border-transparent'"
+    :class="
+      hasScrolled
+        ? 'bg-background/80 backdrop-blur-sm border-border'
+        : 'bg-transparent border-transparent'
+    "
   >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
