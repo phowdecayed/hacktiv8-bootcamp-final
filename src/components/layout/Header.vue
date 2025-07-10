@@ -30,7 +30,7 @@ const hasScrolled = computed(() => y.value > 20)
 
         <!-- Navigation -->
         <div class="flex items-center">
-          <Navigation />
+          <Navigation :has-scrolled="hasScrolled" />
         </div>
       </div>
     </div>

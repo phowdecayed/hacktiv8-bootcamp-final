@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/stores/auth'
@@ -39,6 +39,10 @@ defineOptions({
   name: 'SiteNavigation',
 })
 
+const props = defineProps<{
+  hasScrolled?: boolean
+}>()
+
 const auth = useAuthStore()
 const isMobileMenuOpen = ref(false)
 
@@ -49,16 +53,29 @@ const routes = [
   { name: 'Portofolio', path: '/portfolio', icon: Briefcase },
   { name: 'Kontak', path: '/contact', icon: Mail },
 ]
+
+const navLinkClass = computed(() => {
+  return props.hasScrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2 text-sm'
+})
+
+const authButtonClass = computed(() => {
+  return props.hasScrolled ? 'px-2.5 py-1.5 text-sm' : 'px-3 py-2 text-sm'
+})
+
+const avatarButtonClass = computed(() => {
+  return props.hasScrolled ? 'h-8 w-8' : 'h-9 w-9'
+})
 </script>
 
 <template>
   <div>
     <!-- Desktop Navigation -->
-    <nav class="hidden md:flex items-center space-x-1">
+    <nav class="hidden md:flex items-center space-x-1 transition-all duration-300">
       <Button v-for="route in routes" :key="route.path" variant="ghost" asChild>
         <RouterLink
           :to="route.path"
-          class="px-3 py-2 text-sm font-medium transition-colors"
+          class="font-medium transition-all duration-300"
+          :class="navLinkClass"
           active-class="text-primary"
           exact-active-class="text-primary"
         >
@@ -67,17 +84,17 @@ const routes = [
       </Button>
       <template v-if="!auth.isLoggedIn">
         <Button variant="ghost" asChild>
-          <RouterLink to="/login" class="px-3 py-2 text-sm font-medium">Login</RouterLink>
+          <RouterLink to="/login" class="font-medium transition-all duration-300" :class="authButtonClass">Login</RouterLink>
         </Button>
         <Button asChild>
-          <RouterLink to="/register" class="px-3 py-2 text-sm font-medium">Register</RouterLink>
+          <RouterLink to="/register" class="font-medium transition-all duration-300" :class="authButtonClass">Register</RouterLink>
         </Button>
       </template>
       <template v-else>
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
-            <Button variant="ghost" class="relative h-9 w-9 rounded-full">
-              <Avatar class="h-9 w-9">
+            <Button variant="ghost" class="relative rounded-full transition-all duration-300" :class="avatarButtonClass">
+              <Avatar :class="avatarButtonClass">
                 <AvatarImage src="https://i.pravatar.cc/150" alt="User Avatar" />
                 <AvatarFallback>{{ auth.user?.charAt(0).toUpperCase() }}</AvatarFallback>
               </Avatar>
