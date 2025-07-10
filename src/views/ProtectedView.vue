@@ -3,14 +3,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { motion } from 'motion-v'
 import { useAuthStore } from '@/stores/auth'
 import { useContactStore, type ContactMessage } from '@/stores/contact'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -27,7 +20,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Trash2, Search, RefreshCw, MailOpen, Mail, X } from 'lucide-vue-next'

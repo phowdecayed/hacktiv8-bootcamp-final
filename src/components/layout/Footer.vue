@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { RouterLink } from 'vue-router'
 import { Facebook, Twitter, Instagram, Linkedin } from 'lucide-vue-next'
 
 defineOptions({
   name: 'SiteFooter',
 })
-
-const email = ref('')
 
 const companyLinks = [
   { name: 'About Us', path: '/about' },
@@ -63,18 +59,17 @@ const socialLinks = [
           </ul>
         </div>
 
-        <!-- Newsletter -->
+        <!-- Contact Admin -->
         <div>
-          <h3 class="text-sm font-semibold tracking-wider uppercase text-foreground">
-            Subscribe to our newsletter
-          </h3>
+          <h3 class="text-sm font-semibold tracking-wider uppercase text-foreground">Contact Us</h3>
           <p class="mt-4 text-sm">
-            The latest news, articles, and resources, sent to your inbox weekly.
+            Have a question, suggestion, or need help? Feel free to reach out.
           </p>
-          <form class="mt-4 flex gap-2">
-            <Input v-model="email" type="email" placeholder="Enter your email" />
-            <Button>Subscribe</Button>
-          </form>
+          <div class="mt-4">
+            <RouterLink to="/contact">
+              <Button>Contact Us</Button>
+            </RouterLink>
+          </div>
         </div>
       </div>
 
