@@ -22,7 +22,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Trash2, Search, RefreshCw, MailOpen, Mail, X } from 'lucide-vue-next'
+import { Trash2, Search, RefreshCw, MailOpen, Mail } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
 
 type FilterStatus = 'all' | 'read' | 'unread'
@@ -259,9 +259,6 @@ onUnmounted(() => {
                 Received on: {{ selectedMessage.date }}
               </DialogDescription>
             </div>
-            <Button @click="isDetailViewOpen = false" variant="ghost" size="icon" class="ml-auto">
-              <X class="w-5 h-5" />
-            </Button>
           </div>
         </DialogHeader>
         <Separator />
