@@ -44,12 +44,12 @@ const auth = useAuthStore()
 const isMobileMenuOpen = ref(false)
 
 const routes = [
-  { name: 'Beranda', path: '/', icon: Home },
-  { name: 'Tentang', path: '/about', icon: Info },
-  { name: 'Produk', path: '/products', icon: Package },
+  { name: 'Home', path: '/', icon: Home },
+  { name: 'About Us', path: '/about', icon: Info },
+  { name: 'Services', path: '/products', icon: Package },
   { name: 'Portofolio', path: '/portfolio', icon: Briefcase },
   { name: 'Blog', path: '/blog', icon: BookOpen },
-  { name: 'Kontak', path: '/contact', icon: Mail },
+  { name: 'Contact', path: '/contact', icon: Mail },
 ]
 </script>
 
