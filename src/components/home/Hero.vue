@@ -71,7 +71,7 @@ function goToChatbot() {
             :while-tap="{ scale: 0.95 }"
             class="shadow-lg w-full sm:w-auto"
           >
-            Jelajahi Fitur
+            Explore Features
             <ArrowRight class="ml-2 h-5 w-5" />
           </motion.a>
         </Button>
@@ -87,7 +87,7 @@ function goToChatbot() {
             class="inline-flex items-center"
           >
             <Sparkles class="mr-2 h-5 w-5 text-yellow-400" />
-            <span>Chat dengan AI</span>
+            <span>Chat with AI</span>
           </motion.a>
         </Button>
       </motion.div>

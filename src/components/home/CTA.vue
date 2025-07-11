@@ -29,7 +29,7 @@ import { Rocket, BookOpen } from 'lucide-vue-next'
         :while-in-view="{ opacity: 1, y: 0 }"
         :transition="{ duration: 0.6 }"
       >
-        <span class="block">Tingkatkan Proyek Anda ke Level Berikutnya</span>
+        <span class="block">Elevate Your Project to the Next Level</span>
       </motion.h2>
       <motion.p
         class="mt-4 max-w-2xl mx-auto text-lg opacity-80"
@@ -37,7 +37,7 @@ import { Rocket, BookOpen } from 'lucide-vue-next'
         :while-in-view="{ opacity: 1, y: 0 }"
         :transition="{ duration: 0.6, delay: 0.2 }"
       >
-        Mari berkolaborasi untuk menciptakan solusi digital yang luar biasa. Hubungi kami hari ini!
+        Let's collaborate to build outstanding digital solutions. Get in touch with us today!
       </motion.p>
 
       <motion.div
@@ -54,14 +54,14 @@ import { Rocket, BookOpen } from 'lucide-vue-next'
             class="w-full sm:w-auto"
           >
             <Rocket class="mr-2 h-5 w-5" />
-            Mulai Sekarang
+            Start Now
           </motion.a>
         </Button>
 
         <Button size="lg" variant="secondary" class="text-black w-full sm:w-auto" asChild>
           <motion.a href="/about" :while-hover="{ scale: 1.05 }" :while-tap="{ scale: 0.95 }">
             <BookOpen class="mr-2 h-5 w-5" />
-            Pelajari Lebih Lanjut
+            Discover More
           </motion.a>
         </Button>
       </motion.div>
