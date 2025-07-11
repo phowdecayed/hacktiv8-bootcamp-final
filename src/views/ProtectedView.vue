@@ -270,7 +270,11 @@ onUnmounted(() => {
           class="p-4 bg-muted/50 flex flex-col-reverse sm:flex-row sm:justify-end gap-2"
         >
           <Button @click="isDetailViewOpen = false" variant="outline">Close</Button>
-          <Button @click="contactStore.toggleReadStatus(selectedMessage!.id)" variant="secondary">
+          <Button
+            @click="contactStore.toggleReadStatus(selectedMessage!.id)"
+            variant="secondary"
+            class="text-white"
+          >
             <MailOpen v-if="selectedMessage.isRead" class="w-4 h-4 mr-2" />
             <Mail v-else class="w-4 h-4 mr-2" />
             {{ selectedMessage.isRead ? 'Mark as Unread' : 'Mark as Read' }}

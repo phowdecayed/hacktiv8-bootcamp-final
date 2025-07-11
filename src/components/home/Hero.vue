@@ -87,7 +87,7 @@ function goToChatbot() {
             class="inline-flex items-center"
           >
             <Sparkles class="mr-2 h-5 w-5 text-yellow-400" />
-            <span>Chat with AI</span>
+            <span class="text-white">Chat with AI</span>
           </motion.a>
         </Button>
       </motion.div>
