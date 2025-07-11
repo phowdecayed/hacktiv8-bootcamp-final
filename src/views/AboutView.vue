@@ -163,7 +163,7 @@ const timeline = [
                   </Avatar>
                 </div>
                 <h3 class="text-xl font-bold">{{ member.name }}</h3>
-                <Badge variant="secondary" class="mt-1">{{ member.role }}</Badge>
+                <Badge variant="secondary" class="mt-1 text-white">{{ member.role }}</Badge>
                 <div class="mt-5 flex justify-center gap-4">
                   <a
                     :href="member.social.twitter"

@@ -328,7 +328,7 @@ watch(
             :transition="{ duration: 0.5, delay: index * 0.05, ease: 'easeOut' }"
             :view="{ once: true }"
           >
-            <Badge variant="secondary" class="text-lg px-4 py-2">
+            <Badge variant="secondary" class="text-lg px-4 py-2 text-white">
               {{ tech.name }}
             </Badge>
           </motion.div>

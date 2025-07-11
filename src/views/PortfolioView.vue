@@ -3,7 +3,6 @@ import { ref, computed, onMounted } from 'vue'
 import { motion } from 'motion-v'
 import { Button } from '@/components/ui/button'
 import { RouterLink } from 'vue-router'
-import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import PortfolioCardSkeleton from '@/components/portfolio/PortfolioCardSkeleton.vue'
 
 const portfolioItems = [
@@ -129,7 +128,7 @@ onMounted(() => {
             </p>
             <Button
               variant="secondary"
-              class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              class="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white"
               asChild
             >
               <RouterLink :to="{ name: 'portfolio-detail', params: { id: item.id } }"
