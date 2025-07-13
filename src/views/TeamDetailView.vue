@@ -54,7 +54,7 @@ const member = computed(() => {
               v-for="skill in member.skills"
               :key="skill"
               variant="secondary"
-              class="text-base text-white px-3 py-1"
+              class="text-base px-3 py-1"
             >
               {{ skill }}
             </Badge>

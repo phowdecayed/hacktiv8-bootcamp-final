@@ -105,9 +105,7 @@ watch(
               Tags
             </h3>
             <div class="flex flex-wrap gap-2">
-              <Badge v-for="tag in post.tags" :key="tag" variant="secondary" class="text-white">{{
-                tag
-              }}</Badge>
+              <Badge v-for="tag in post.tags" :key="tag" variant="secondary">{{ tag }}</Badge>
             </div>
           </div>
 

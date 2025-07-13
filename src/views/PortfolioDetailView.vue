@@ -1,15 +1,28 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { ref, computed, watch } from 'vue'
 import { motion } from 'motion-v'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
 const route = useRoute()
-const router = useRouter()
 const portfolioId = ref(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id)
 
-const portfolioData: { [key: string]: any } = {
+const portfolioData: Record<
+  string,
+  {
+    title: string
+    category: string
+    description: string
+    imageUrl: string
+    client: string
+    date: string
+    services: string
+    website: string
+    technologies: string[]
+    gallery: string[]
+  }
+> = {
   alpha: {
     title: 'Project Alpha',
     category: 'Web App',
@@ -77,9 +90,7 @@ watch(
 <template>
   <div class="bg-background text-foreground">
     <!-- Hero Section -->
-    <div
-      class="relative h-[50vh] flex items-center justify-center text-center text-white overflow-hidden"
-    >
+    <div class="relative h-[50vh] flex items-center justify-center text-center overflow-hidden">
       <div class="absolute inset-0 bg-black/60 z-10"></div>
       <img
         :src="item.imageUrl"

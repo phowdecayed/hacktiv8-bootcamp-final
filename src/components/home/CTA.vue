@@ -46,7 +46,7 @@ import { Rocket, BookOpen } from 'lucide-vue-next'
         :while-in-view="{ opacity: 1, y: 0 }"
         :transition="{ duration: 0.6, delay: 0.4 }"
       >
-        <Button size="lg" variant="secondary" class="text-white" asChild>
+        <Button size="lg" variant="secondary" asChild>
           <motion.a
             href="/contact"
             :while-hover="{ scale: 1.05 }"
@@ -58,7 +58,7 @@ import { Rocket, BookOpen } from 'lucide-vue-next'
           </motion.a>
         </Button>
 
-        <Button size="lg" variant="secondary" class="text-white w-full sm:w-auto" asChild>
+        <Button size="lg" variant="secondary" class="w-full sm:w-auto" asChild>
           <motion.a href="/about" :while-hover="{ scale: 1.05 }" :while-tap="{ scale: 0.95 }">
             <BookOpen class="mr-2 h-5 w-5" />
             Discover More
