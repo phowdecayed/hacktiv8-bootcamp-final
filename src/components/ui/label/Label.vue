@@ -6,6 +6,10 @@ import { cn } from '@/lib/utils'
 
 const props = defineProps<LabelProps & { class?: HTMLAttributes['class'] }>()
 
+defineOptions({
+  name: 'siteLabel',
+})
+
 const delegatedProps = reactiveOmit(props, 'class')
 </script>
 

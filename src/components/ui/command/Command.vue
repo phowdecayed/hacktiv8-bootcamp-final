@@ -6,6 +6,10 @@ import { type HTMLAttributes, reactive, ref, watch } from 'vue'
 import { cn } from '@/lib/utils'
 import { provideCommandContext } from '.'
 
+defineOptions({
+  name: 'siteCommand',
+})
+
 const props = withDefaults(defineProps<ListboxRootProps & { class?: HTMLAttributes['class'] }>(), {
   modelValue: '',
 })
@@ -63,9 +67,9 @@ function filterItems() {
   filterState.filtered.count = itemCount
 }
 
-function handleSelect() {
-  filterState.search = ''
-}
+// function handleSelect() {
+//   filterState.search = ''
+// }
 
 watch(
   () => filterState.search,

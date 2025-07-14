@@ -7,6 +7,10 @@ const props = withDefaults(defineProps<CarouselProps & WithClassAsProps>(), {
   orientation: 'horizontal',
 })
 
+defineOptions({
+  name: 'siteCarousel',
+})
+
 const emits = defineEmits<CarouselEmits>()
 
 const {

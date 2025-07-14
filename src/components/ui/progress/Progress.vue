@@ -8,6 +8,10 @@ const props = withDefaults(defineProps<ProgressRootProps & { class?: HTMLAttribu
   modelValue: 0,
 })
 
+defineOptions({
+  name: 'siteProgress',
+})
+
 const delegatedProps = reactiveOmit(props, 'class')
 </script>
 

@@ -8,6 +8,10 @@ import { cn } from '@/lib/utils'
 const props = defineProps<TabsRootProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<TabsRootEmits>()
 
+defineOptions({
+  name: 'siteTabs',
+})
+
 const delegatedProps = reactiveOmit(props, 'class')
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
 </script>

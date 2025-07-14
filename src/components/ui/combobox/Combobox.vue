@@ -9,6 +9,10 @@ import {
 const props = defineProps<ComboboxRootProps>()
 const emits = defineEmits<ComboboxRootEmits>()
 
+defineOptions({
+  name: 'siteCombobox',
+})
+
 const forwarded = useForwardPropsEmits(props, emits)
 </script>
 

@@ -5,6 +5,10 @@ import { Toggle, type ToggleEmits, type ToggleProps, useForwardPropsEmits } from
 import { cn } from '@/lib/utils'
 import { type ToggleVariants, toggleVariants } from '.'
 
+defineOptions({
+  name: 'siteToggle',
+})
+
 const props = withDefaults(
   defineProps<
     ToggleProps & {

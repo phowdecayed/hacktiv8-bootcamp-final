@@ -13,6 +13,10 @@ const props = defineProps<
   }
 >()
 
+defineOptions({
+  name: 'siteBadge',
+})
+
 const delegatedProps = reactiveOmit(props, 'class')
 </script>
 

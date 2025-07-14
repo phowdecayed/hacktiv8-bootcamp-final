@@ -6,6 +6,10 @@ interface SkeletonProps {
   class?: HTMLAttributes['class']
 }
 
+defineOptions({
+  name: 'siteSkeleton',
+})
+
 const props = defineProps<SkeletonProps>()
 </script>
 

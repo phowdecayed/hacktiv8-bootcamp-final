@@ -6,6 +6,10 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 
+defineOptions({
+  name: 'siteTooltip',
+})
+
 const props = defineProps<TooltipRootProps>()
 const emits = defineEmits<TooltipRootEmits>()
 

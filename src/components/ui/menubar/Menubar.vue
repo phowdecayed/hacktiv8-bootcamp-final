@@ -12,6 +12,10 @@ import { cn } from '@/lib/utils'
 const props = defineProps<MenubarRootProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<MenubarRootEmits>()
 
+defineOptions({
+  name: 'siteMenubar',
+})
+
 const delegatedProps = reactiveOmit(props, 'class')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)

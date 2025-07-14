@@ -8,6 +8,10 @@ import { cn } from '@/lib/utils'
 const props = defineProps<SliderRootProps & { class?: HTMLAttributes['class'] }>()
 const emits = defineEmits<SliderRootEmits>()
 
+defineOptions({
+  name: 'siteSlider',
+})
+
 const delegatedProps = reactiveOmit(props, 'class')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)

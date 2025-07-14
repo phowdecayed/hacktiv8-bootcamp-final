@@ -7,6 +7,10 @@ const props = defineProps<{
   class?: HTMLAttributes['class']
   variant?: AlertVariants['variant']
 }>()
+
+defineOptions({
+  name: 'siteAlert',
+})
 </script>
 
 <template>

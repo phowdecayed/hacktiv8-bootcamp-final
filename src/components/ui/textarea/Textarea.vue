@@ -9,6 +9,10 @@ const props = defineProps<{
   modelValue?: string | number
 }>()
 
+defineOptions({
+  name: 'siteTextArea',
+})
+
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: string | number): void
 }>()

@@ -6,6 +6,10 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 
+defineOptions({
+  name: 'siteDialog',
+})
+
 const props = defineProps<DialogRootProps>()
 const emits = defineEmits<DialogRootEmits>()
 

@@ -7,6 +7,10 @@ const expression = ref('')
 const currentInput = ref('0')
 const hasCalculated = ref(false)
 
+defineOptions({
+  name: 'siteCalculator',
+})
+
 const displayValue = computed(() => {
   return (
     expression.value +
@@ -53,7 +57,7 @@ const handleEqualsClick = () => {
     currentInput.value = String(result)
     expression.value = ''
     hasCalculated.value = true
-  } catch (e) {
+  } catch {
     currentInput.value = 'Error'
     expression.value = ''
   }

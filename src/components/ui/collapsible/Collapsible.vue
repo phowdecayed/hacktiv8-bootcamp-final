@@ -5,6 +5,10 @@ import { CollapsibleRoot, useForwardPropsEmits } from 'reka-ui'
 const props = defineProps<CollapsibleRootProps>()
 const emits = defineEmits<CollapsibleRootEmits>()
 
+defineOptions({
+  name: 'siteCollapsible',
+})
+
 const forwarded = useForwardPropsEmits(props, emits)
 </script>
 

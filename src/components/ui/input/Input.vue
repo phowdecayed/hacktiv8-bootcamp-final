@@ -10,6 +10,10 @@ const props = defineProps<{
   class?: HTMLAttributes['class']
 }>()
 
+defineOptions({
+  name: 'siteInput',
+})
+
 const emits = defineEmits<{
   (e: 'update:modelValue', payload: string | number): void
 }>()

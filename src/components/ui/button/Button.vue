@@ -10,6 +10,10 @@ interface Props extends PrimitiveProps {
   class?: HTMLAttributes['class']
 }
 
+defineOptions({
+  name: 'siteButton',
+})
+
 const props = withDefaults(defineProps<Props>(), {
   as: 'button',
 })

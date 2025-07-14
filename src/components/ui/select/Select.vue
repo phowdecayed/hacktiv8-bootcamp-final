@@ -5,6 +5,10 @@ import { SelectRoot, useForwardPropsEmits } from 'reka-ui'
 const props = defineProps<SelectRootProps>()
 const emits = defineEmits<SelectRootEmits>()
 
+defineOptions({
+  name: 'siteSelect',
+})
+
 const forwarded = useForwardPropsEmits(props, emits)
 </script>
 

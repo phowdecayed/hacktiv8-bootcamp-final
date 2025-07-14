@@ -9,6 +9,10 @@ const props = withDefaults(defineProps<SeparatorProps & { class?: HTMLAttributes
   decorative: true,
 })
 
+defineOptions({
+  name: 'siteSeparator',
+})
+
 const delegatedProps = reactiveOmit(props, 'class')
 </script>
 

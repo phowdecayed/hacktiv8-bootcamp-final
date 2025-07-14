@@ -33,4 +33,8 @@
 
 <script setup lang="ts">
 defineEmits(['close'])
+
+defineOptions({
+  name: 'siteChatbot',
+})
 </script>
