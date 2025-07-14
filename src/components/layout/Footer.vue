@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { RouterLink } from 'vue-router'
 import { Facebook, Twitter, Instagram, Linkedin, Moon, Sun } from 'lucide-vue-next'
 import { useUiStore } from '@/stores/ui'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 defineOptions({
   name: 'SiteFooter',
@@ -11,6 +11,25 @@ defineOptions({
 
 const uiStore = useUiStore()
 const isDark = computed(() => uiStore.theme === 'dark')
+
+// Fungsi untuk menerapkan efek transisi tema
+const applyThemeTransition = () => {
+  // Tambahkan kelas transisi ke element html
+  document.documentElement.classList.add('theme-transition')
+
+  // Hapus kelas setelah transisi selesai untuk menghindari transisi saat reload
+  setTimeout(() => {
+    document.documentElement.classList.remove('theme-transition')
+  }, 800)
+
+  // Toggle tema
+  uiStore.toggleTheme()
+}
+
+onMounted(() => {
+  // Inisialisasi transisi tema
+  document.documentElement.classList.add('theme-transition-init')
+})
 
 const companyLinks = [
   { name: 'About Us', path: '/about' },
@@ -100,7 +119,7 @@ const socialLinks = [
           </a>
           <!-- Theme Toggle Button -->
           <button
-            @click="uiStore.toggleTheme"
+            @click="applyThemeTransition"
             class="theme-toggle p-2 rounded-full hover:bg-muted/50 transition-all duration-300 relative overflow-hidden"
             :class="{ 'theme-toggle-active': isDark }"
             aria-label="Toggle Theme"
@@ -113,6 +132,7 @@ const socialLinks = [
               class="h-5 w-5 text-blue-400 absolute transform transition-all duration-500 ease-spring"
               :class="isDark ? 'rotate-0 opacity-100 scale-100' : '-rotate-180 opacity-0 scale-0'"
             />
+            <span class="theme-ripple" :class="{ 'ripple-active': isDark }"></span>
           </button>
         </div>
       </div>
@@ -128,6 +148,7 @@ const socialLinks = [
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
+  position: relative;
 }
 
 .theme-toggle:hover {
@@ -166,5 +187,74 @@ const socialLinks = [
 /* Custom easing spring effect for transitions */
 .ease-spring {
   transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Theme ripple effect */
+.theme-ripple {
+  position: absolute;
+  width: 0%;
+  height: 0%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(100, 150, 255, 0.8) 0%, rgba(70, 120, 220, 0) 70%);
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  transition: all 0.6s cubic-bezier(0.5, 1.8, 0.5, 0.8);
+  opacity: 0;
+  z-index: -1;
+}
+
+.ripple-active {
+  width: 250%;
+  height: 250%;
+  opacity: 0.15;
+}
+</style>
+
+<style>
+/* Global transition styles */
+.theme-transition-init {
+  transition: none !important;
+}
+
+.theme-transition,
+.theme-transition * {
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease,
+    border-color 0.5s ease,
+    box-shadow 0.5s ease !important;
+}
+
+/* Tambahkan gaya animasi untuk perubahan tema secara global */
+body {
+  transition-property: background-color, color;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+}
+
+/* Animasi untuk kartu dan elemen dengan latar */
+.card,
+.bg-card,
+.bg-muted,
+.bg-background,
+.bg-primary,
+.bg-secondary {
+  transition:
+    background-color 0.5s ease,
+    box-shadow 0.5s ease,
+    transform 0.3s ease;
+}
+
+/* Animasi untuk border */
+[class*='border'] {
+  transition: border-color 0.5s ease;
+}
+
+/* Efek halus pada hover selama transisi tema */
+button:hover,
+a:hover,
+.hover\:bg-muted:hover {
+  transition: all 0.3s ease;
 }
 </style>
