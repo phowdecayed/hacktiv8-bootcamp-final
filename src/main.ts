@@ -14,6 +14,6 @@ app.use(createPinia())
 app.use(router)
 
 // Add the Toaster component to the app instance
-app.component('Toaster', Toaster)
+app.component('ToasterNotification', Toaster)
 
 app.mount('#app')
