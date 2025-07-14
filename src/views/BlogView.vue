@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { blogPosts, type BlogPost } from '@/lib/blog-data'
+import { blogPosts } from '@/lib/blog-data'
 import BlogPostCard from '@/components/blog/BlogPostCard.vue'
 import BlogPostListItem from '@/components/blog/BlogPostListItem.vue'
 import BlogSearch from '@/components/blog/BlogSearch.vue'

@@ -6,7 +6,6 @@ import {
 } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import { useAuthStore } from '@/stores/auth'
-import TeamDetailView from '@/views/TeamDetailView.vue'
 import FeatureDetailView from '@/views/FeatureDetailView.vue'
 
 const router = createRouter({
@@ -99,7 +98,11 @@ const router = createRouter({
       component: () => import('../views/TermsOfServiceView.vue'),
     },
   ],
-  scrollBehavior(to: RouteLocationNormalized, from: RouteLocationNormalized, savedPosition: any) {
+  scrollBehavior(
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    savedPosition: { left: number; top: number } | null,
+  ) {
     if (savedPosition) {
       return savedPosition
     } else {

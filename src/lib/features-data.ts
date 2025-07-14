@@ -1,11 +1,12 @@
-import { Zap, Code, Shield, Smartphone, Cloud, Layers, CheckCircle } from 'lucide-vue-next'
+import { Zap, Code, Shield, Smartphone, Cloud, Layers } from 'lucide-vue-next'
+import type { Component } from 'vue'
 
 export interface Feature {
   slug: string
   title: string
   description: string
   longDescription: string
-  icon: any
+  icon: Component
   keyPoints: { title: string; description: string }[]
 }
 
