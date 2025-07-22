@@ -1,79 +1,83 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import api from '@/lib/axios'
 
 // Define an interface for the user object
 interface User {
-  username: string
-  password: string // This will be the hashed password
-}
-
-// Helper function to hash passwords using the SubtleCrypto API
-async function hashPassword(password: string): Promise<string> {
-  const encoder = new TextEncoder()
-  const data = encoder.encode(password)
-  const hashBuffer = await window.crypto.subtle.digest('SHA-256', data)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  const hashHex = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('')
-  return hashHex
+  id: number
+  name: string
+  email: string
+  email_verified_at: string | null
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  const user = ref<string | null>(localStorage.getItem('user'))
+  const user = ref<User | null>(null)
+  const token = ref<string | null>(localStorage.getItem('token'))
+  const isInitialized = ref(false)
   const router = useRouter()
 
   const isLoggedIn = computed(() => !!user.value)
 
+  async function initAuth() {
+    if (isInitialized.value) return
+    if (token.value) {
+      await fetchUser()
+    }
+    isInitialized.value = true
+  }
+
   async function register(
-    username: string,
+    name: string,
+    email: string,
     password: string,
-  ): Promise<{ success: boolean; message: string }> {
-    if (!username || !password) {
-      return { success: false, message: 'Username and password are required.' }
+    password_confirmation: string
+  ): Promise<{ success: boolean; message: string; errors?: any }> {
+    try {
+      await api.post('/api/register', { name, email, password, password_confirmation })
+      return { success: true, message: 'Registration successful! Please log in.' }
+    } catch (error: any) {
+      return { success: false, message: 'Registration failed.', errors: error.response.data.errors }
     }
-    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]')
-    const existingUser = users.find((u: User) => u.username === username)
-
-    if (existingUser) {
-      return { success: false, message: 'Username already exists.' }
-    }
-
-    const hashedPassword = await hashPassword(password)
-    users.push({ username, password: hashedPassword })
-    localStorage.setItem('users', JSON.stringify(users))
-    return { success: true, message: 'Registration successful! Please log in.' }
   }
 
-  async function login(username: string, password: string): Promise<boolean> {
-    const users: User[] = JSON.parse(localStorage.getItem('users') || '[]')
-    const hashedPassword = await hashPassword(password)
-
-    // Add default admin user if not present
-    const adminUserExists = users.some((u: User) => u.username === 'admin')
-    if (!adminUserExists) {
-      const adminHashedPassword = await hashPassword('admin')
-      users.push({ username: 'admin', password: adminHashedPassword })
-      localStorage.setItem('users', JSON.stringify(users))
-    }
-
-    const foundUser = users.find(
-      (u: User) => u.username === username && u.password === hashedPassword,
-    )
-
-    if (foundUser) {
-      user.value = foundUser.username
-      localStorage.setItem('user', foundUser.username)
-      router.push('/protected')
+  async function login(email: string, password: string): Promise<boolean> {
+    try {
+      const response = await api.post('/api/login', { email, password })
+      const responseToken = response.data.access_token
+      token.value = responseToken
+      localStorage.setItem('token', responseToken)
+      await fetchUser()
+      router.push('/profile')
       return true
+    } catch (error) {
+      return false
     }
-    return false
   }
 
-  function logout(): void {
-    user.value = null
-    localStorage.removeItem('user')
-    router.push('/')
+  async function fetchUser() {
+    try {
+      const response = await api.get('/api/user')
+      user.value = response.data
+    } catch (error) {
+      user.value = null
+      token.value = null
+      localStorage.removeItem('token')
+    }
   }
 
-  return { user, isLoggedIn, register, login, logout }
+  async function logout(): Promise<void> {
+    try {
+      await api.post('/api/logout')
+    } catch (error) {
+      console.error('Logout failed', error)
+    } finally {
+      user.value = null
+      token.value = null
+      localStorage.removeItem('token')
+      router.push('/')
+    }
+  }
+
+  return { user, token, isLoggedIn, isInitialized, initAuth, register, login, logout, fetchUser }
 })

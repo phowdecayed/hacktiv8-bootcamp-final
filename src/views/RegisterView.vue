@@ -9,7 +9,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -21,28 +21,39 @@ import AuthFormSkeleton from '@/components/ui/skeleton/AuthFormSkeleton.vue'
 const auth = useAuthStore()
 const router = useRouter()
 
-const username = ref('')
-const password = ref('')
+const name = ref('')
 const email = ref('')
+const password = ref('')
+const password_confirmation = ref('')
 const isRegistering = ref(false)
 const isLoading = ref(true)
+const errors = ref<any>({})
 
 const handleRegister = async () => {
   isRegistering.value = true
-  const result = await auth.register(username.value, password.value)
+  errors.value = {}
+  const result = await auth.register(
+    name.value,
+    email.value,
+    password.value,
+    password_confirmation.value
+  )
   isRegistering.value = false
 
   if (result.success) {
     toast.success('Registration Successful!', {
-      description: 'You will be redirected to the login page shortly.',
+      description: 'You will be redirected to the login page shortly.'
     })
     setTimeout(() => {
       router.push('/login')
     }, 2000)
   } else {
     toast.error('Registration Failed', {
-      description: result.message,
+      description: result.message
     })
+    if (result.errors) {
+      errors.value = result.errors
+    }
   }
 }
 
@@ -73,6 +84,11 @@ onMounted(() => {
             <CardContent>
               <form @submit.prevent="handleRegister" class="space-y-4">
                 <div class="space-y-2">
+                  <Label for="name">Name</Label>
+                  <Input id="name" v-model="name" required placeholder="Your name" />
+                  <span v-if="errors.name" class="text-red-500 text-sm">{{ errors.name[0] }}</span>
+                </div>
+                <div class="space-y-2">
                   <Label for="email">Email</Label>
                   <Input
                     id="email"
@@ -81,15 +97,7 @@ onMounted(() => {
                     required
                     placeholder="email@example.com"
                   />
-                </div>
-                <div class="space-y-2">
-                  <Label for="username">Username</Label>
-                  <Input
-                    id="username"
-                    v-model="username"
-                    required
-                    placeholder="Choose a username"
-                  />
+                  <span v-if="errors.email" class="text-red-500 text-sm">{{ errors.email[0] }}</span>
                 </div>
                 <div class="space-y-2">
                   <Label for="password">Password</Label>
@@ -99,6 +107,19 @@ onMounted(() => {
                     type="password"
                     required
                     placeholder="Create a password"
+                  />
+                  <span v-if="errors.password" class="text-red-500 text-sm">
+                    {{ errors.password[0] }}
+                  </span>
+                </div>
+                <div class="space-y-2">
+                  <Label for="password_confirmation">Confirm Password</Label>
+                  <Input
+                    id="password_confirmation"
+                    v-model="password_confirmation"
+                    type="password"
+                    required
+                    placeholder="Confirm your password"
                   />
                 </div>
                 <Button type="submit" class="w-full !mt-6" :disabled="isRegistering">

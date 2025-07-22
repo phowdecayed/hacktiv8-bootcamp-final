@@ -8,7 +8,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -18,15 +18,22 @@ import { toast } from 'vue-sonner'
 import AuthFormSkeleton from '@/components/ui/skeleton/AuthFormSkeleton.vue'
 
 const auth = useAuthStore()
-const username = ref('')
+const email = ref('')
 const password = ref('')
 const isLoading = ref(true)
+const isLoggingIn = ref(false)
 
 const handleLogin = async () => {
-  const success = await auth.login(username.value, password.value)
-  if (!success) {
+  isLoggingIn.value = true
+  const success = await auth.login(email.value, password.value)
+  isLoggingIn.value = false
+  if (success) {
+    toast.success('Login Successful!', {
+      description: 'You will be redirected shortly.'
+    })
+  } else {
     toast.error('Login Failed', {
-      description: 'Invalid username or password.',
+      description: 'Invalid email or password.'
     })
   }
 }
@@ -58,8 +65,14 @@ onMounted(() => {
             <CardContent>
               <form @submit.prevent="handleLogin" class="space-y-4">
                 <div class="space-y-2">
-                  <Label for="username">Username</Label>
-                  <Input id="username" v-model="username" required placeholder="username" />
+                  <Label for="email">Email</Label>
+                  <Input
+                    id="email"
+                    v-model="email"
+                    type="email"
+                    required
+                    placeholder="email@example.com"
+                  />
                 </div>
                 <div class="space-y-2">
                   <Label for="password">Password</Label>
@@ -71,15 +84,18 @@ onMounted(() => {
                     placeholder="password"
                   />
                 </div>
-                <Button type="submit" class="w-full !mt-6">Login</Button>
+                <Button type="submit" class="w-full !mt-6" :disabled="isLoggingIn">
+                  <span v-if="isLoggingIn">Logging in...</span>
+                  <span v-else>Login</span>
+                </Button>
               </form>
             </CardContent>
             <CardFooter class="text-center text-sm">
               <p>
                 Don't have an account?
-                <RouterLink to="/register" class="text-primary hover:underline"
-                  >Register</RouterLink
-                >
+                <RouterLink to="/register" class="text-primary hover:underline">
+                  Register
+                </RouterLink>
               </p>
             </CardFooter>
           </Card>
