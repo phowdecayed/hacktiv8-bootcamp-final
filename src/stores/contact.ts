@@ -1,123 +1,76 @@
 import { defineStore } from 'pinia'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
+import api from '@/lib/axios'
 
 export interface ContactMessage {
-  id: string
+  id: number
   name: string
   email: string
   subject: string
   message: string
-  date: string
-  isRead: boolean
+  created_at: string
+  is_read: boolean
 }
 
 export const useContactStore = defineStore('contact', () => {
   const messages = ref<ContactMessage[]>([])
 
-  // Load messages from localStorage
-  const storedMessages = localStorage.getItem('contactMessages')
-  if (storedMessages) {
-    messages.value = JSON.parse(storedMessages)
-  }
-
-  // Watch for changes and save to localStorage
-  watch(
-    messages,
-    (newMessages) => {
-      localStorage.setItem('contactMessages', JSON.stringify(newMessages))
-    },
-    { deep: true },
-  )
-
-  function addMessage(name: string, email: string, subject: string, message: string) {
-    const newMessage: ContactMessage = {
-      id: new Date().toISOString(),
-      name,
-      email,
-      subject,
-      message,
-      date: new Date().toLocaleString('id-ID'),
-      isRead: false,
-    }
-    messages.value.unshift(newMessage)
-  }
-
-  function markAsRead(id: string) {
-    const message = messages.value.find((m) => m.id === id)
-    if (message) {
-      message.isRead = true
+  async function fetchMessages() {
+    try {
+      const response = await api.get('/api/contact-messages')
+      messages.value = response.data
+    } catch (error) {
+      console.error('Failed to fetch messages', error)
     }
   }
 
-  function toggleReadStatus(id: string) {
-    const message = messages.value.find((m) => m.id === id)
-    if (message) {
-      message.isRead = !message.isRead
+  async function createMessage(
+    name: string,
+    email: string,
+    subject: string,
+    message: string
+  ): Promise<boolean> {
+    try {
+      await api.post('/api/contact-messages', { name, email, subject, message })
+      return true
+    } catch (error) {
+      console.error('Failed to create message', error)
+      return false
     }
   }
 
-  function deleteMessage(id: string) {
-    messages.value = messages.value.filter((m) => m.id !== id)
-  }
-
-  function refreshMessages() {
-    const storedMessages = localStorage.getItem('contactMessages')
-    if (storedMessages) {
-      messages.value = JSON.parse(storedMessages)
+  async function toggleReadStatus(
+    id: number,
+    is_read: boolean
+  ): Promise<ContactMessage | null> {
+    try {
+      const response = await api.put(`/api/contact-messages/${id}`, { is_read: !is_read })
+      const updatedMessage = response.data
+      const index = messages.value.findIndex((m) => m.id === id)
+      if (index !== -1) {
+        messages.value[index] = updatedMessage
+      }
+      return updatedMessage
+    } catch (error) {
+      console.error('Failed to update message', error)
+      return null
     }
   }
 
-  function seedMessages() {
-    if (messages.value.length > 0) return
-
-    const seedData: Omit<ContactMessage, 'id' | 'date' | 'isRead' | 'subject'>[] = [
-      {
-        name: 'Alice Johnson',
-        email: 'alice@example.com',
-        message:
-          'I have a question about your web development services. Can you provide more details on the technologies you use?',
-      },
-      {
-        name: 'Bob Williams',
-        email: 'bob@example.com',
-        message: 'Interested in a collaboration for a mobile app project. Please get in touch.',
-      },
-      {
-        name: 'Charlie Brown',
-        email: 'charlie@example.com',
-        message:
-          'Great portfolio! I would like to get a quote for a UI/UX design for my e-commerce site.',
-      },
-      {
-        name: 'Diana Miller',
-        email: 'diana@example.com',
-        message: 'What is the typical timeline for a standard cloud solution implementation?',
-      },
-    ]
-
-    seedData.forEach((data, index) => {
-      const subjects = [
-        'Web Development Inquiry',
-        'Collaboration Opportunity',
-        'Quotation Request',
-        'Question about Cloud Solutions',
-      ]
-      addMessage(data.name, data.email, subjects[index] || 'General Inquiry', data.message)
-    })
-
-    // Mark one as read for demonstration
-    if (messages.value.length > 2) {
-      messages.value[2].isRead = true
+  async function deleteMessage(id: number) {
+    try {
+      await api.delete(`/api/contact-messages/${id}`)
+      messages.value = messages.value.filter((m) => m.id !== id)
+    } catch (error) {
+      console.error('Failed to delete message', error)
     }
   }
 
   return {
     messages,
-    addMessage,
-    markAsRead,
+    fetchMessages,
+    createMessage,
     toggleReadStatus,
-    deleteMessage,
-    refreshMessages,
-    seedMessages,
+    deleteMessage
   }
 })

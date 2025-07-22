@@ -5,32 +5,43 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { motion } from 'motion-v'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useContactStore } from '@/stores/contact'
+import { toast } from 'vue-sonner'
 
 const name = ref('')
 const email = ref('')
 const subject = ref('')
 const message = ref('')
-const submitted = ref(false)
+const isSubmitting = ref(false)
 const isMapLoading = ref(true)
 
 const contactStore = useContactStore()
 
-const submitForm = () => {
-  contactStore.addMessage(name.value, email.value, subject.value, message.value)
-  submitted.value = true
+const submitForm = async () => {
+  isSubmitting.value = true
+  const success = await contactStore.createMessage(
+    name.value,
+    email.value,
+    subject.value,
+    message.value
+  )
+  isSubmitting.value = false
 
-  // Reset form after a few seconds
-  setTimeout(() => {
+  if (success) {
+    toast.success('Message Sent!', {
+      description: 'We will get back to you shortly.'
+    })
     name.value = ''
     email.value = ''
     subject.value = ''
     message.value = ''
-    submitted.value = false
-  }, 3000)
+  } else {
+    toast.error('Failed to Send Message', {
+      description: 'Please try again later.'
+    })
+  }
 }
 
 onMounted(() => {
@@ -134,21 +145,7 @@ onMounted(() => {
               <CardDescription> Isi formulir di bawah ini untuk menghubungi kami. </CardDescription>
             </CardHeader>
             <CardContent>
-              <motion.div
-                v-if="submitted"
-                :initial="{ opacity: 0, scale: 0.9 }"
-                :animate="{ opacity: 1, scale: 1 }"
-                :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-                class="mb-6"
-              >
-                <Alert>
-                  <AlertTitle>Berhasil</AlertTitle>
-                  <AlertDescription>
-                    Pesan Anda berhasil dikirim! Kami akan segera menghubungi Anda.
-                  </AlertDescription>
-                </Alert>
-              </motion.div>
-              <form v-else @submit.prevent="submitForm" class="space-y-4">
+              <form @submit.prevent="submitForm" class="space-y-4">
                 <div class="space-y-2">
                   <label for="name" class="font-medium">Nama</label>
                   <Input id="name" v-model="name" required placeholder="Masukkan nama Anda" />
@@ -182,7 +179,10 @@ onMounted(() => {
                     rows="5"
                   />
                 </div>
-                <Button type="submit" class="w-full">Kirim Pesan</Button>
+                <Button type="submit" class="w-full" :disabled="isSubmitting">
+                  <span v-if="isSubmitting">Sending...</span>
+                  <span v-else>Kirim Pesan</span>
+                </Button>
               </form>
             </CardContent>
           </Card>

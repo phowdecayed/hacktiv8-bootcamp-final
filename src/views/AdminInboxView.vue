@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { motion } from 'motion-v'
 import { useAuthStore } from '@/stores/auth'
 import { useContactStore, type ContactMessage } from '@/stores/contact'
@@ -10,20 +10,21 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
+  DialogFooter
 } from '@/components/ui/dialog'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Trash2, Search, RefreshCw, MailOpen, Mail } from 'lucide-vue-next'
 import { Separator } from '@/components/ui/separator'
+import { format } from 'date-fns'
 
 type FilterStatus = 'all' | 'read' | 'unread'
 
@@ -34,16 +35,18 @@ const searchTerm = ref('')
 const statusFilter = ref<FilterStatus>('all')
 const selectedMessage = ref<ContactMessage | null>(null)
 const isDetailViewOpen = ref(false)
-let refreshInterval: number | undefined
+const isLoading = ref(true)
 
 const filteredMessages = computed(() => {
   let messages = [...contactStore.messages].sort(
-    (a, b) => new Date(b.id).getTime() - new Date(a.id).getTime(),
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
   )
 
   // Apply status filter
   if (statusFilter.value !== 'all') {
-    messages = messages.filter((msg) => (statusFilter.value === 'read' ? msg.isRead : !msg.isRead))
+    messages = messages.filter((msg) =>
+      statusFilter.value === 'read' ? msg.is_read : !msg.is_read
+    )
   }
 
   // Apply search term
@@ -54,40 +57,45 @@ const filteredMessages = computed(() => {
         msg.name.toLowerCase().includes(lowerCaseSearch) ||
         msg.email.toLowerCase().includes(lowerCaseSearch) ||
         msg.subject.toLowerCase().includes(lowerCaseSearch) ||
-        msg.message.toLowerCase().includes(lowerCaseSearch),
+        msg.message.toLowerCase().includes(lowerCaseSearch)
     )
   }
 
   return messages
 })
 
-const refreshMessages = () => {
-  contactStore.refreshMessages()
+const refreshMessages = async () => {
+  isLoading.value = true
+  await contactStore.fetchMessages()
+  isLoading.value = false
 }
 
 const viewMessage = (msg: ContactMessage) => {
   selectedMessage.value = msg
   isDetailViewOpen.value = true
-  if (!msg.isRead) {
-    contactStore.markAsRead(msg.id)
+  if (!msg.is_read) {
+    handleToggleReadStatus(msg.id, msg.is_read)
   }
 }
 
-const deleteMessageFromDetail = (id: string) => {
+const deleteMessageFromDetail = (id: number) => {
   contactStore.deleteMessage(id)
   isDetailViewOpen.value = false
 }
 
-onMounted(() => {
-  contactStore.seedMessages()
-  refreshMessages() // Initial refresh
-  refreshInterval = window.setInterval(refreshMessages, 5000) // Auto-refresh every 5 seconds
-})
-
-onUnmounted(() => {
-  if (refreshInterval) {
-    clearInterval(refreshInterval)
+const handleToggleReadStatus = async (id: number, is_read: boolean) => {
+  const updatedMessage = await contactStore.toggleReadStatus(id, is_read)
+  if (updatedMessage && selectedMessage.value && selectedMessage.value.id === id) {
+    selectedMessage.value = updatedMessage
   }
+}
+
+const formatDate = (dateString: string) => {
+  return format(new Date(dateString), 'PPpp')
+}
+
+onMounted(() => {
+  refreshMessages()
 })
 </script>
 
@@ -102,7 +110,7 @@ onUnmounted(() => {
     >
       <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">Admin Inbox</h1>
       <p class="mt-6 max-w-2xl mx-auto text-xl text-muted-foreground">
-        Welcome, {{ authStore.user }}. Manage your contact messages efficiently.
+        Welcome, {{ authStore.user?.name }}. Manage your contact messages efficiently.
       </p>
     </motion.div>
 
@@ -135,7 +143,7 @@ onUnmounted(() => {
               </SelectContent>
             </Select>
             <Button @click="refreshMessages" variant="outline" class="w-full sm:w-auto">
-              <RefreshCw class="w-4 h-4 mr-2" />
+              <RefreshCw class="w-4 h-4 mr-2" :class="{ 'animate-spin': isLoading }" />
               Refresh
             </Button>
           </div>
@@ -168,13 +176,13 @@ onUnmounted(() => {
                 :key="msg.id"
                 @click="viewMessage(msg)"
                 class="p-4 flex items-start gap-4 cursor-pointer hover:bg-muted/50 transition-colors"
-                :class="{ 'bg-muted/20': msg.isRead, 'font-semibold': !msg.isRead }"
+                :class="{ 'bg-muted/20': msg.is_read, 'font-semibold': !msg.is_read }"
               >
                 <div class="flex items-center gap-4 flex-1">
                   <div class="flex items-center gap-2">
                     <span
                       class="w-2 h-2 rounded-full"
-                      :class="[msg.isRead ? 'bg-transparent' : 'bg-primary']"
+                      :class="[msg.is_read ? 'bg-transparent' : 'bg-primary']"
                     ></span>
                     <Avatar class="hidden sm:block">
                       <AvatarFallback>{{ msg.name.charAt(0).toUpperCase() }}</AvatarFallback>
@@ -185,8 +193,8 @@ onUnmounted(() => {
                       <p
                         class="truncate"
                         :class="{
-                          'text-foreground': !msg.isRead,
-                          'text-muted-foreground': msg.isRead,
+                          'text-foreground': !msg.is_read,
+                          'text-muted-foreground': msg.is_read
                         }"
                       >
                         {{ msg.name }}
@@ -196,8 +204,8 @@ onUnmounted(() => {
                       <p
                         class="truncate"
                         :class="{
-                          'text-foreground': !msg.isRead,
-                          'text-muted-foreground': msg.isRead,
+                          'text-foreground': !msg.is_read,
+                          'text-muted-foreground': msg.is_read
                         }"
                       >
                         {{ msg.subject }}
@@ -206,18 +214,18 @@ onUnmounted(() => {
                     <div
                       class="col-span-12 sm:col-span-3 text-sm text-muted-foreground text-left sm:text-right"
                     >
-                      {{ msg.date }}
+                      {{ formatDate(msg.created_at) }}
                     </div>
                   </div>
                 </div>
                 <div class="flex items-center gap-2 ml-auto">
                   <Button
-                    @click.stop="contactStore.toggleReadStatus(msg.id)"
+                    @click.stop="handleToggleReadStatus(msg.id, msg.is_read)"
                     variant="ghost"
                     size="icon"
-                    :title="msg.isRead ? 'Mark as unread' : 'Mark as read'"
+                    :title="msg.is_read ? 'Mark as unread' : 'Mark as read'"
                   >
-                    <MailOpen v-if="!msg.isRead" class="w-5 h-5" />
+                    <MailOpen v-if="!msg.is_read" class="w-5 h-5" />
                     <Mail v-else class="w-5 h-5 text-muted-foreground" />
                   </Button>
                   <Button
@@ -256,7 +264,7 @@ onUnmounted(() => {
                   selectedMessage.email
                 }})
                 <br />
-                Received on: {{ selectedMessage.date }}
+                Received on: {{ formatDate(selectedMessage.created_at) }}
               </DialogDescription>
             </div>
           </div>
@@ -270,10 +278,13 @@ onUnmounted(() => {
           class="p-4 bg-muted/50 flex flex-col-reverse sm:flex-row sm:justify-end gap-2"
         >
           <Button @click="isDetailViewOpen = false" variant="outline">Close</Button>
-          <Button @click="contactStore.toggleReadStatus(selectedMessage!.id)" variant="secondary">
-            <MailOpen v-if="selectedMessage.isRead" class="w-4 h-4 mr-2" />
+          <Button
+            @click="handleToggleReadStatus(selectedMessage!.id, selectedMessage!.is_read)"
+            variant="secondary"
+          >
+            <MailOpen v-if="selectedMessage.is_read" class="w-4 h-4 mr-2" />
             <Mail v-else class="w-4 h-4 mr-2" />
-            {{ selectedMessage.isRead ? 'Mark as Unread' : 'Mark as Read' }}
+            {{ selectedMessage.is_read ? 'Mark as Unread' : 'Mark as Read' }}
           </Button>
           <Button @click="deleteMessageFromDetail(selectedMessage!.id)" variant="destructive">
             <Trash2 class="w-4 h-4 mr-2" />
