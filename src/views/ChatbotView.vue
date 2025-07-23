@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { motion } from 'motion-v'
-import { loadSlim } from 'tsparticles-slim'
-import type { Engine } from 'tsparticles-engine'
-import { options as particleOptions } from '@/lib/particles-config'
 import { useRouter } from 'vue-router'
 
 defineOptions({
@@ -10,10 +7,6 @@ defineOptions({
 })
 
 const router = useRouter()
-
-async function particlesInit(engine: Engine) {
-  await loadSlim(engine)
-}
 
 function closeWindow() {
   router.back()
@@ -24,16 +17,6 @@ function closeWindow() {
   <div
     class="relative min-h-[calc(100vh-4rem)] w-full overflow-hidden bg-background flex items-center justify-center p-4"
   >
-    <!-- Particle Background -->
-    <div class="absolute inset-0 z-0">
-      <Particles
-        id="tsparticles-chatbot"
-        class="w-full h-full"
-        :options="particleOptions"
-        @load="particlesInit"
-      />
-    </div>
-
     <!-- Chatbot Window -->
     <motion.div
       class="relative z-10 w-full max-w-4xl h-[85vh] flex flex-col rounded-xl shadow-2xl bg-background/50 backdrop-blur-lg border border-white/10"
