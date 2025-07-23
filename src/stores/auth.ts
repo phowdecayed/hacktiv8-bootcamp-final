@@ -91,8 +91,12 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function verifyEmail(verificationUrl: string): Promise<boolean> {
     try {
+      let secureVerificationUrl = verificationUrl
+      if (!verificationUrl.includes('localhost') && !verificationUrl.includes('127.0.0.1')) {
+        secureVerificationUrl = verificationUrl.replace('http://', 'https://')
+      }
       // Use a direct axios call, not the configured api instance
-      await axios.get(verificationUrl)
+      await axios.get(secureVerificationUrl)
       // If the user is logged in, refresh their data to show the verified status
       if (isLoggedIn.value) {
         await fetchUser()
