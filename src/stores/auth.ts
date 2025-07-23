@@ -15,7 +15,6 @@ export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const token = ref<string | null>(localStorage.getItem('token'))
   const isInitialized = ref(false)
-  const router = useRouter()
 
   const isLoggedIn = computed(() => !!user.value)
 
@@ -42,6 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login(email: string, password: string): Promise<boolean> {
+    const router = useRouter()
     try {
       const response = await api.post('/api/login', { email, password })
       const responseToken = response.data.access_token
@@ -67,6 +67,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout(): Promise<void> {
+    const router = useRouter()
     try {
       await api.post('/api/logout')
     } catch (error) {
