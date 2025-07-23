@@ -88,6 +88,21 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function verifyEmail(
+    id: number,
+    hash: string,
+    expires: string,
+    signature: string
+  ): Promise<boolean> {
+    try {
+      await api.get(`/api/email/verify/${id}/${hash}?expires=${expires}&signature=${signature}`)
+      return true
+    } catch (error) {
+      console.error('Email verification failed', error)
+      return false
+    }
+  }
+
   return {
     user,
     token,
@@ -98,6 +113,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     logout,
     fetchUser,
-    resendVerificationEmail
+    resendVerificationEmail,
+    verifyEmail
   }
 })
