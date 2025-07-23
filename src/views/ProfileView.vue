@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { computed } from 'vue'
+import { Button } from '@/components/ui/button'
+import { computed, ref } from 'vue'
+import { toast } from 'vue-sonner'
 
 const auth = useAuthStore()
+const isSending = ref(false)
 
 const userInitials = computed(() => {
   if (auth.user) {
@@ -15,6 +18,22 @@ const userInitials = computed(() => {
   }
   return ''
 })
+
+const handleResendVerification = async () => {
+  isSending.value = true
+  const success = await auth.resendVerificationEmail()
+  isSending.value = false
+
+  if (success) {
+    toast.success('Verification Email Sent!', {
+      description: 'Please check your inbox for the verification link.'
+    })
+  } else {
+    toast.error('Failed to Send Email', {
+      description: 'Please try again later.'
+    })
+  }
+}
 </script>
 
 <template>
@@ -48,6 +67,12 @@ const userInitials = computed(() => {
             </span>
           </div>
         </CardContent>
+        <CardFooter v-if="!auth.user?.email_verified_at" class="flex justify-center">
+          <Button @click="handleResendVerification" :disabled="isSending">
+            <span v-if="isSending">Sending...</span>
+            <span v-else>Resend Verification Email</span>
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   </div>

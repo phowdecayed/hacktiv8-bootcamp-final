@@ -78,5 +78,26 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { user, token, isLoggedIn, isInitialized, initAuth, register, login, logout, fetchUser }
+  async function resendVerificationEmail(): Promise<boolean> {
+    try {
+      await api.post('/api/email/verification-notification')
+      return true
+    } catch (error) {
+      console.error('Failed to resend verification email', error)
+      return false
+    }
+  }
+
+  return {
+    user,
+    token,
+    isLoggedIn,
+    isInitialized,
+    initAuth,
+    register,
+    login,
+    logout,
+    fetchUser,
+    resendVerificationEmail
+  }
 })
