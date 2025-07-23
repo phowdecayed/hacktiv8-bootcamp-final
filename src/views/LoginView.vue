@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -18,6 +19,7 @@ import { toast } from 'vue-sonner'
 import AuthFormSkeleton from '@/components/ui/skeleton/AuthFormSkeleton.vue'
 
 const auth = useAuthStore()
+const router = useRouter()
 const email = ref('')
 const password = ref('')
 const isLoading = ref(true)
@@ -31,6 +33,7 @@ const handleLogin = async () => {
     toast.success('Login Successful!', {
       description: 'You will be redirected shortly.'
     })
+    router.push('/profile')
   } else {
     toast.error('Login Failed', {
       description: 'Invalid email or password.'

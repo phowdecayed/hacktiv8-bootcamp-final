@@ -2,7 +2,7 @@
 import Navigation from '@/components/layout/Navigation.vue'
 import { computed } from 'vue'
 import { useScroll } from '@vueuse/core'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import {
   DropdownMenu,
@@ -10,16 +10,17 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 defineOptions({
-  name: 'SiteHeader',
+  name: 'SiteHeader'
 })
 
 const { y } = useScroll(window)
 const auth = useAuthStore()
+const router = useRouter()
 
 const hasScrolled = computed(() => y.value > 20)
 
@@ -32,6 +33,11 @@ const userInitials = computed(() => {
   }
   return ''
 })
+
+const handleLogout = async () => {
+  await auth.logout()
+  router.push('/')
+}
 </script>
 
 <template>
@@ -77,7 +83,7 @@ const userInitials = computed(() => {
                 <DropdownMenuItem v-if="auth.user.email === 'admin@example.com'">
                   <RouterLink to="/admin-inbox">Admin Inbox</RouterLink>
                 </DropdownMenuItem>
-                <DropdownMenuItem @click="auth.logout">Logout</DropdownMenuItem>
+                <DropdownMenuItem @click="handleLogout">Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

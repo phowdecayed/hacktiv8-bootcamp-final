@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import api from '@/lib/axios'
 
 // Define an interface for the user object
@@ -41,14 +40,13 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login(email: string, password: string): Promise<boolean> {
-    const router = useRouter()
     try {
       const response = await api.post('/api/login', { email, password })
       const responseToken = response.data.access_token
       token.value = responseToken
       localStorage.setItem('token', responseToken)
       await fetchUser()
-      router.push('/profile')
+      // The router push is removed from here
       return true
     } catch (error) {
       return false
@@ -67,7 +65,6 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout(): Promise<void> {
-    const router = useRouter()
     try {
       await api.post('/api/logout')
     } catch (error) {
@@ -76,7 +73,8 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = null
       token.value = null
       localStorage.removeItem('token')
-      router.push('/')
+      // We will handle the redirect in the component where logout is called.
+      // For now, we assume a page reload or manual navigation will occur.
     }
   }
 
