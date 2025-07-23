@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import api from '@/lib/axios'
+import axios from 'axios'
 
 // Define an interface for the user object
 interface User {
@@ -88,14 +89,14 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function verifyEmail(
-    id: number,
-    hash: string,
-    expires: string,
-    signature: string
-  ): Promise<boolean> {
+  async function verifyEmail(verificationUrl: string): Promise<boolean> {
     try {
-      await api.get(`/api/email/verify/${id}/${hash}?expires=${expires}&signature=${signature}`)
+      // Use a direct axios call, not the configured api instance
+      await axios.get(verificationUrl)
+      // If the user is logged in, refresh their data to show the verified status
+      if (isLoggedIn.value) {
+        await fetchUser()
+      }
       return true
     } catch (error) {
       console.error('Email verification failed', error)

@@ -14,16 +14,10 @@ const isLoading = ref(true)
 const isSuccess = ref(false)
 
 onMounted(async () => {
-  const { id, hash } = route.params
-  const { expires, signature } = route.query
+  const verificationUrl = route.query.url as string
 
-  if (id && hash && expires && signature) {
-    const success = await auth.verifyEmail(
-      Number(id),
-      String(hash),
-      String(expires),
-      String(signature)
-    )
+  if (verificationUrl) {
+    const success = await auth.verifyEmail(verificationUrl)
     isSuccess.value = success
     if (success) {
       toast.success('Email Verified!', {
