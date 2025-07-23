@@ -4,15 +4,6 @@ import { RouterLink } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { useAuthStore } from '@/stores/auth'
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -23,8 +14,6 @@ import {
 } from '@/components/ui/sheet'
 import {
   Menu,
-  Shield,
-  LogOut,
   Home,
   Info,
   Package,
@@ -106,46 +95,6 @@ const routes = [
             <RouterLink to="/register">Register</RouterLink>
           </Button>
         </template>
-        <template v-else>
-          <DropdownMenu>
-            <DropdownMenuTrigger as-child>
-              <motion.div
-                :while-hover="{ scale: 1.1 }"
-                :while-tap="{ scale: 0.95 }"
-                :transition="{ duration: 0.2, ease: 'easeInOut' }"
-              >
-                <Button variant="ghost" class="relative rounded-full h-10 w-10">
-                  <Avatar
-                    class="h-10 w-10 border-2 border-transparent group-hover:border-primary transition-colors"
-                  >
-                    <AvatarImage src="https://i.pravatar.cc/150" alt="User Avatar" />
-                    <AvatarFallback>{{ auth.user?.name?.charAt(0).toUpperCase() }}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </motion.div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent class="w-56" align="end">
-              <DropdownMenuLabel class="font-normal">
-                <p class="text-sm font-medium leading-none">Welcome, {{ auth.user }}</p>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <RouterLink to="/protected" class="flex items-center">
-                  <Shield class="mr-2 h-4 w-4" />
-                  <span>Protected Page</span>
-                </RouterLink>
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                @click="auth.logout()"
-                class="flex items-center cursor-pointer text-destructive focus:text-destructive"
-              >
-                <LogOut class="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </template>
       </motion.div>
     </nav>
 
@@ -210,30 +159,6 @@ const routes = [
                     <LogIn class="mr-2 h-5 w-5" />
                     Login
                   </RouterLink>
-                </Button>
-              </div>
-              <div v-else class="space-y-3">
-                <RouterLink
-                  to="/protected"
-                  class="flex items-center p-2 rounded-lg hover:bg-muted"
-                  @click="isMobileMenuOpen = false"
-                >
-                  <Avatar class="h-11 w-11 mr-3 border-2 border-primary/50">
-                    <AvatarImage src="https://i.pravatar.cc/150" alt="User Avatar" />
-                    <AvatarFallback>{{ auth.user?.name?.charAt(0).toUpperCase() }}</AvatarFallback>
-                  </Avatar>
-                  <div class="flex flex-col text-left">
-                    <p class="font-semibold text-sm leading-tight">Welcome back,</p>
-                    <p class="text-primary font-bold text-base -mt-1">{{ auth.user }}</p>
-                  </div>
-                </RouterLink>
-                <Button
-                  variant="destructive"
-                  @click="(auth.logout(), (isMobileMenuOpen = false))"
-                  class="w-full"
-                >
-                  <LogOut class="mr-2 h-5 w-5" />
-                  <span>Log out</span>
                 </Button>
               </div>
             </motion.div>
