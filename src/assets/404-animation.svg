@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <style>
+    .text {
+      font-family: 'Arial', sans-serif;
+      font-size: 90px;
+      font-weight: bold;
+      fill: #333;
+      text-anchor: middle;
+    }
+    .ghost {
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+  </style>
+  <g class="text">
+    <text x="220" y="200" style="white-space: pre;">4</text>
+    <text x="380" y="200" style="white-space: pre;">4</text>
+  </g>
+  <g class="ghost" transform="matrix(1, 0, 0, 1, 0, -10.11264)">
+    <path d="M 300.068 213.969 C 270.068 213.969 250.068 193.969 250.068 163.969 C 250.068 133.969 270.068 113.969 300.068 113.969 C 330.068 113.969 350.068 133.969 350.068 163.969 C 350.068 193.969 330.068 213.969 300.068 213.969 Z" fill="#E0E0E0"/>
+    <path d="M 250.256 163.804 C 283.589 170.471 316.922 170.471 350.256 163.804 L 350.256 213.804 L 250.256 213.804 L 250.256 163.804 Z" fill="#E0E0E0"/>
+    <circle cx="277.049" cy="154.964" r="8" fill="#333"/>
+    <circle cx="319.54" cy="154.657" r="8" fill="#333"/>
+    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="10 50 50" dur="0.5s" repeatCount="indefinite" direction="alternate"/>
+  </g>
+</svg>

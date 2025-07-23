@@ -4,19 +4,18 @@ import { computed } from 'vue'
 import { useScroll } from '@vueuse/core'
 import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 defineOptions({
-  name: 'SiteHeader'
+  name: 'SiteHeader',
 })
 
 const { y } = useScroll(window)
@@ -63,7 +62,9 @@ const userInitials = computed(() => {
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
-                  <AvatarImage :src="`https://api.dicebear.com/6.x/initials/svg?seed=${auth.user.name}`" />
+                  <AvatarImage
+                    :src="`https://api.dicebear.com/6.x/initials/svg?seed=${auth.user.name}`"
+                  />
                   <AvatarFallback>{{ userInitials }}</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
@@ -79,14 +80,6 @@ const userInitials = computed(() => {
                 <DropdownMenuItem @click="auth.logout">Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
-          <div v-else class="flex items-center gap-2">
-            <Button as-child variant="ghost">
-              <RouterLink to="/login">Login</RouterLink>
-            </Button>
-            <Button as-child>
-              <RouterLink to="/register">Register</RouterLink>
-            </Button>
           </div>
         </div>
       </div>

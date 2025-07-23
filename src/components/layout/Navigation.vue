@@ -119,7 +119,7 @@ const routes = [
                     class="h-10 w-10 border-2 border-transparent group-hover:border-primary transition-colors"
                   >
                     <AvatarImage src="https://i.pravatar.cc/150" alt="User Avatar" />
-                    <AvatarFallback>{{ auth.user?.charAt(0).toUpperCase() }}</AvatarFallback>
+                    <AvatarFallback>{{ auth.user?.name?.charAt(0).toUpperCase() }}</AvatarFallback>
                   </Avatar>
                 </Button>
               </motion.div>
@@ -220,7 +220,7 @@ const routes = [
                 >
                   <Avatar class="h-11 w-11 mr-3 border-2 border-primary/50">
                     <AvatarImage src="https://i.pravatar.cc/150" alt="User Avatar" />
-                    <AvatarFallback>{{ auth.user?.charAt(0).toUpperCase() }}</AvatarFallback>
+                    <AvatarFallback>{{ auth.user?.name?.charAt(0).toUpperCase() }}</AvatarFallback>
                   </Avatar>
                   <div class="flex flex-col text-left">
                     <p class="font-semibold text-sm leading-tight">Welcome back,</p>

@@ -104,6 +104,11 @@ const router = createRouter({
       path: '/terms-of-service',
       name: 'terms-of-service',
       component: () => import('../views/TermsOfServiceView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFoundView.vue')
     }
   ],
   scrollBehavior(
