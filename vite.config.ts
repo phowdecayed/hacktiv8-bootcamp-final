@@ -17,7 +17,7 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
     svgLoader({
-      defaultImport: 'url' // or 'raw'
+      defaultImport: 'component' // or 'raw'
     }),
     VitePWA({
       registerType: 'autoUpdate',
